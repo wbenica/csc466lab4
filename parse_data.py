@@ -16,7 +16,7 @@ def to_header(hrow):
     res = []
     if int(hrow[0]) == 0:
         res.append('row_id')
-        res += list(range(1,len(hrow)))
+        res += list(range(0,len(hrow)-1))
     else:
-        res = list(range(1,len(hrow) + 1))
+        res = list(range(0,len(hrow)))
     return tuple(res)
