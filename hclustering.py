@@ -75,13 +75,6 @@ def singleLinkDist(clusters):
                         minDist = dist
     return (minDist, minCl1, minCl2)
 
-def displayTree(tree):
-    if len(tree.kids) < 2:
-        return 
-    print(tree.circ)
-    (tree.kids[0])
-    displayTree(tree.kids[1])
-    
 
 def displayJSONRecursion(tree):
     node = {}
@@ -120,7 +113,6 @@ def main():
                 rowIds = df.iloc[:,0]
             colsToDrop.append(i)
     df.drop(df.columns[colsToDrop], axis = 1, inplace = True)
-
 
     dataset = []
     for index, datapt in df.iterrows():
