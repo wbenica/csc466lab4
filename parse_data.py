@@ -8,7 +8,7 @@ def parse_csv(fn: str) -> pd.DataFrame:
     if header[0] == 'row_id':
         df = pd.read_csv(fn, names=header[1:], index_col=0,skiprows=1)
     else:
-        df = pd.read_csv(fn, names=header, skiprows=0)
+        df = pd.read_csv(fn, names=header, skiprows=1)
     return df
 
 
