@@ -19,17 +19,6 @@ class Cluster:
         self.datapts = datapoints
         self.circ = circumference
         self.kids = []
-    #def __str__(self):
-        #return ', '.join(["%d" % x.id for x in self.datapts])
-    #def __repr__(self):
-     #   return ', '.join(["%d" % x.id for x in self.datapts])
-    def __repr__(self):
-        l = ""
-        r = ""
-        if len(self.kids) > 1:
-            l = self.kids[0].__repr__()
-            r = self.kids[1].__repr__()
-        return l + "\n" + r + "\n" + ', '.join(["%d" % x.id for x in self.datapts])
 
 #numpy wrapper class to let JSON dumps read as primitives. accounts for certain csvs
 #https://stackoverflow.com/a/57915246     
@@ -61,8 +50,6 @@ def agglomerative(dataset):
             newClust.datapts.append(dp)
         for dp in cl2.datapts:
           newClust.datapts.append(dp)
-        #newClust.kids.append(cl1.kids)
-        #newClust.kids.append(cl2.kids)
         newClust.kids.append(cl1)
         newClust.kids.append(cl2)
         clusters = [c for c in clusters if c != cl1 and c!= cl2]
