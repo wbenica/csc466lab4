@@ -1,5 +1,5 @@
 from typing import Union, List
-
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -51,13 +51,27 @@ def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray) -> None:
     :param clusters: a list of k DataFrames
     :param centroids: a 2D numpy array of the centroids of the clusters
     """
-    fig, ax = plt.subplots()
-    for cluster, centroid in zip(clusters, centroids):
-        ax.scatter(cluster[0], cluster[1])
-        ax.scatter(centroid[0], centroid[1], c='black')
-    ax.grid(True)
-    fig.tight_layout()
-
+    if len(centroids[0]) == 2:
+        fig, ax = plt.subplots()
+        for cluster, centroid in zip(clusters, centroids):
+            ax.scatter(cluster[0], cluster[1])
+            ax.scatter(centroid[0], centroid[1], c='black')
+        ax.grid(True)
+        fig.tight_layout()
+    elif len(centroids[0]) == 3:
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        for cluster, centroid in zip(clusters, centroids):
+            ax.scatter(cluster[0], cluster[1], cluster[2])
+            ax.scatter(centroid[0], centroid[1], centroid[2])
+    elif len(centroids[0]) == 4:
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        for cluster, centroid in zip(clusters, centroids):
+            img1 = ax.scatter(cluster[0], cluster[1], cluster[2], c=cluster[3], cmap=plt.hot())
+            fig.colorbar(img1)
+            img2 = ax.scatter(centroid[0], centroid[1], centroid[2], c=centroid[3], cmap=plt.hot())
+            fig.colorbar(img2)
     plt.show()
 
 

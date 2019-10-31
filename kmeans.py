@@ -128,9 +128,11 @@ def get_min_dist(cluster, centroid):
 
 def get_avg_dist(cluster, centroid):
     cluster = np.absolute(cluster.values - centroid)
-    avg_dist = cluster.mean().sum(axis=0)
-    return math.sqrt(avg_dist)
-
+    if len(cluster) > 0:
+        avg_dist = cluster.mean().sum(axis=0)
+        return math.sqrt(avg_dist)
+    else:
+        return 0
 
 def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
     variance = cluster - centroid
@@ -140,10 +142,11 @@ def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
 
 def test():
     df = parse_csv(c.MANY_CLUSTERS)
-    k = 5
+    k = 4
     threshold = 0.1
-    clusters, centroids = kmeans(df, k, threshold, get_dist=get_euclidean_distances_normalized)
-    if 2 <= clusters[0].shape[1] <= 3:
+    clusters, centroids = kmeans(df, k, threshold, get_dist=get_euclidean_distances)
+    if 2 <= clusters[0].shape[1] <= 4:
+        plot_clusters([df], np.array([df.mean().values]))
         plot_clusters(clusters, centroids)
     for i, cluster in enumerate(clusters):
         print()
