@@ -141,13 +141,14 @@ def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
 
 
 def test():
-    df = parse_csv(c.MANY_CLUSTERS)
+    fn = c.MANY_CLUSTERS
+    df = parse_csv(fn)
     k = 4
     threshold = 0.1
     clusters, centroids = kmeans(df, k, threshold, get_dist=get_euclidean_distances)
     if 2 <= clusters[0].shape[1] <= 4:
-        plot_clusters([df], np.array([df.mean().values]))
-        plot_clusters(clusters, centroids)
+        plot_clusters([df], np.array([df.mean().values]), f'kmeans {fn}')
+        plot_clusters(clusters, centroids, f'kmeans clustered {fn}')
     for i, cluster in enumerate(clusters):
         print()
         print(f'Cluster {i + 1}')

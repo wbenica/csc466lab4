@@ -46,16 +46,18 @@ def get_euclidean_distances_normalized(mx_one: Union[pd.DataFrame, np.ndarray],
     return np.sqrt(mx_one_sq + mx_two_sq - 2 * mtx_prod)
 
 
-def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray) -> None:
+def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray, title: str) -> None:
     """displays a scatterplot of clusters and their centroids
     :param clusters: a list of k DataFrames
     :param centroids: a 2D numpy array of the centroids of the clusters
     """
-    if len(centroids[0]) == 2:
+    ax: plt.Subplot = None
+    if clusters[0].shape[1] == 2:
         fig, ax = plt.subplots()
         for cluster, centroid in zip(clusters, centroids):
             ax.scatter(cluster[0], cluster[1])
-            ax.scatter(centroid[0], centroid[1], c='black')
+            if centroids is not None:
+                ax.scatter(centroid[0], centroid[1], c='black')
         ax.grid(True)
         fig.tight_layout()
     elif len(centroids[0]) == 3:
@@ -63,15 +65,18 @@ def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray) -> None:
         ax = fig.add_subplot(111, projection='3d')
         for cluster, centroid in zip(clusters, centroids):
             ax.scatter(cluster[0], cluster[1], cluster[2])
-            ax.scatter(centroid[0], centroid[1], centroid[2])
+            if centroids is not None:
+                ax.scatter(centroid[0], centroid[1], centroid[2])
     elif len(centroids[0]) == 4:
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
         for cluster, centroid in zip(clusters, centroids):
             img1 = ax.scatter(cluster[0], cluster[1], cluster[2], c=cluster[3], cmap=plt.hot())
             fig.colorbar(img1)
-            img2 = ax.scatter(centroid[0], centroid[1], centroid[2], c=centroid[3], cmap=plt.hot())
-            fig.colorbar(img2)
+            if centroids is not None:
+                img2 = ax.scatter(centroid[0], centroid[1], centroid[2], c=centroid[3], cmap=plt.hot())
+                fig.colorbar(img2)
+    ax.set_title(title)
     plt.show()
 
 
