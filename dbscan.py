@@ -48,7 +48,7 @@ def dbscan(df: pd.DataFrame, epsilon: float, min_points: int):
 
 
 def test():
-    fn = c.MANY_CLUSTERS
+    fn = c.FOUR_CLUSTERS
     df = parse_csv(fn)
     min_points = 2
     clusters = dbscan(df, 15, min_points)
@@ -62,12 +62,15 @@ def main():
             f'dbscan expected 3 arguments, got {len(sys.argv) - 1}')
     else:
         fn = sys.argv[1]
-        epsilon = sys.argv[2]
-        num_points = sys.argv[3]
+        epsilon = int(sys.argv[2])
+        num_points = int(sys.argv[3])
 
     df = parse_csv(fn)
-    dbscan(df, epsilon, num_points)
+    clusters = dbscan(df, epsilon, num_points)
+    for cluster in clusters:
+        print(cluster)
+    plot_clusters(clusters, np.array([cluster.mean() for cluster in clusters]), f'dbscan {fn}')
 
 
 if __name__ == "__main__":
-    test()
+    main()
