@@ -10,8 +10,9 @@ import constants as c
 from parse_data import parse_csv
 
 
-def get_manhattan_distances(mx_one: Union[pd.DataFrame, np.ndarray],
-                            mx_two: Union[pd.DataFrame, np.ndarray] = None) -> np.ndarray:
+# TODO: ACCIDENTS_3 has a comma at the end of every row, which messes things up for that dataset
+def get_euclidean_distances_normalized(mx_one: Union[pd.DataFrame, np.ndarray],
+                                       mx_two: Union[pd.DataFrame, np.ndarray] = None) -> np.ndarray:
     """calculates the sum of the manhattan distance between each row in mx_one and all
     the rows in mx_two
     :param mx_one: a DataFrame or np.ndarray of the data points whose distances you want to know
@@ -33,20 +34,23 @@ def get_manhattan_distances(mx_one: Union[pd.DataFrame, np.ndarray],
     return mx_one_sq + mx_two_sq - 2 * mtx_prod
 
 
-def get_euclidean_distances(mx_one: Union[pd.DataFrame, np.ndarray], mx_two: Union[pd.DataFrame, np.ndarray] = None) \
-        -> np.ndarray:
-    """returns a numpy array of the squared distances between mx_one and mx_two"""
+def get_euclidean_distances(mx_one: Union[pd.DataFrame, np.ndarray],
+                                       mx_two: Union[pd.DataFrame, np.ndarray] = None) -> np.ndarray:
+    """calculates the sum of the manhattan distance between each row in mx_one and all
+    the rows in mx_two
+    :param mx_one: a DataFrame or np.ndarray of the data points whose distances you want to know
+    :param mx_two: a DataFrame or np.ndarray of the data points from which you are calculating distance
+    :return: an ndarray table of the distances between data points in mx_one and mx_2"""
     if mx_two is None:
         mx_two = mx_one
     if isinstance(mx_one, pd.DataFrame):
-        mx_one = mx_one.values
+        mx_one: np.ndarray = mx_one.values
     if isinstance(mx_two, pd.DataFrame):
-        mx_two = mx_two.values
-    one_ptp = mx_one.ptp(axis=0)
-    one_min = mx_one.min(axis=0)
-    mx_one = (mx_one - one_min) / one_ptp
-    mx_two = (mx_two - one_min) / one_ptp
-    return np.square(mx_one[:] - mx_two[:])
+        mx_two: np.ndarray = mx_two.values
+    mx_one_sq = np.square(mx_one).sum(axis=1)[:, np.newaxis]
+    mx_two_sq = np.square(mx_two).sum(axis=1)
+    mtx_prod = mx_one.dot(mx_two.transpose())
+    return mx_one_sq + mx_two_sq - 2 * mtx_prod
 
 
 def shuffle(df: pd.DataFrame) -> np.ndarray:
@@ -59,7 +63,7 @@ def shuffle(df: pd.DataFrame) -> np.ndarray:
 
 
 # TODO: think about whether it's better to return a dataframe so that row_ids are passed along
-def select_centroids_smart(df: pd.DataFrame, k: int, get_dist=get_manhattan_distances) -> np.ndarray:
+def select_centroids_smart(df: pd.DataFrame, k: int, get_dist=get_euclidean_distances) -> np.ndarray:
     points = pd.DataFrame(df.mean(axis=0)).T
     i = 1
     while i < k:
@@ -105,11 +109,11 @@ def is_stopping_condition(old_clusters, clusters, old_centroids, new_centroids, 
         print('reass')
     if change_centroids:
         print('centrs')
-    return num_reassigns or change_centroids
+    return change_centroids
 
 
 def kmeans(df: pd.DataFrame, k: int, threshold=None, select_centroids=select_centroids_smart,
-           get_dist=get_manhattan_distances) -> Tuple[List[pd.DataFrame], np.ndarray]:
+           get_dist=get_euclidean_distances) -> Tuple[List[pd.DataFrame], np.ndarray]:
     centroids = select_centroids(df, k)
     old_clusters = None
     t = 0
@@ -170,18 +174,24 @@ def get_avg_dist(cluster, centroid):
 
 
 def test():
-    df = parse_csv(c.PLANETS)
-    k = 5
+    df = parse_csv(c.ACCIDENTS_2)
+    k = 6
     threshold = 0.1
     clusters, centroids = kmeans(df, k, threshold)
     for i, cluster in enumerate(clusters):
         print()
         print(f'Cluster {i + 1}')
         print(f'Centroid: {centroids[i]}')
+        max, min, avg = get_max_min_avg(cluster, centroids[i])
+        print(f'Max Dist: {max}')
+        print(f'Min Dist: {min}')
+        print(f'Avg Dist: {avg}')
+        print('alt')
         print(f'Max Dist: {get_max_dist(cluster, centroids[i])}')
         print(f'Min Dist: {get_min_dist(cluster, centroids[i])}')
         print(f'Avg Dist: {get_avg_dist(cluster, centroids[i])}')
         print(f'Num. Points: {len(cluster)}')
+        print(f'SSE: N/A')
         print()
         print(cluster)
 
