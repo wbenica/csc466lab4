@@ -2,6 +2,7 @@ import random
 import sys
 import math
 from typing import Union, List, Tuple
+import matplotlib.pyplot as plt
 
 import numpy as np
 import pandas as pd
@@ -13,8 +14,8 @@ from parse_data import parse_csv
 # TODO: ACCIDENTS_3 has a comma at the end of every row, which messes things up for that dataset
 def get_euclidean_distances_normalized(mx_one: Union[pd.DataFrame, np.ndarray],
                                        mx_two: Union[pd.DataFrame, np.ndarray] = None) -> np.ndarray:
-    """calculates the sum of the manhattan distance between each row in mx_one and all
-    the rows in mx_two
+    """normalizes all values to range 0.0-1.0 then calculates the sum of the manhattan distance between each row in
+    mx_one and all the rows in mx_two
     :param mx_one: a DataFrame or np.ndarray of the data points whose distances you want to know
     :param mx_two: a DataFrame or np.ndarray of the data points from which you are calculating distance
     :return: an ndarray table of the distances between data points in mx_one and mx_2"""
@@ -58,7 +59,7 @@ def shuffle(df: pd.DataFrame) -> np.ndarray:
     n = df.shape[0]
     indices = np.array(range(n))
     random.shuffle(indices)
-    res = np.ndarray([df.iloc[i] for i in indices])
+    res = np.array([df.iloc[i] for i in indices])
     return res
 
 
@@ -84,6 +85,7 @@ def select_centroids_rand(df: pd.DataFrame, k: int) -> np.ndarray:
 
 def check_centroid_change(old_centroids, new_centroids, threshold):
     change = abs((old_centroids - new_centroids).sum())
+    print(f'change: {change}')
     return math.sqrt(change) < threshold
 
 
@@ -102,14 +104,28 @@ def check_num_reassignments(clusters, old_clusters):
     return num_reassignments < 2
 
 
-def is_stopping_condition(old_clusters, clusters, old_centroids, new_centroids, threshold):
-    num_reassigns = check_num_reassignments(clusters, old_clusters)
+def check_sse_change(old_clusters, new_clusters, old_centroids, new_centroids):
+    if old_clusters is None:
+        return False
+    old_sse = np.array([get_sse(old_clusters[i], old_centroids[i]) for i in range(len(old_clusters))]).sum()
+    new_sse = np.array([get_sse(new_clusters[i], new_centroids[i]) for i in range(len(new_centroids))]).sum()
+    change = new_sse - old_sse
+    return change < 0 and change / old_sse < 0.005
+
+
+def is_stopping_condition(old_clusters, new_clusters, old_centroids, new_centroids, threshold):
+    num_reassigns = check_num_reassignments(new_clusters, old_clusters)
     change_centroids = check_centroid_change(old_centroids, new_centroids, threshold)
+    sse_chng = check_sse_change(old_clusters, new_clusters, old_centroids, new_centroids)
+    # sse_chng = False
+    print('\nSTOP CHECK:')
     if num_reassigns:
         print('reass')
     if change_centroids:
         print('centrs')
-    return change_centroids
+    if sse_chng:
+        print('sse')
+    return change_centroids or num_reassigns or sse_chng
 
 
 def kmeans(df: pd.DataFrame, k: int, threshold=None, select_centroids=select_centroids_smart,
@@ -173,25 +189,42 @@ def get_avg_dist(cluster, centroid):
     return math.sqrt(avg_dist)
 
 
+def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
+    variance = cluster - centroid
+    var_sq = np.square(variance).sum()
+    return var_sq.sum()
+
+
+def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray) -> None:
+    """displays a scatterplot of clusters and their centroids
+    :param clusters: a list of k DataFrames
+    :param centroids: a 2D numpy array of the centroids of the clusters
+    """
+    fig, ax = plt.subplots()
+    for cluster, centroid in zip(clusters, centroids):
+        ax.scatter(cluster[0], cluster[1])
+        ax.scatter(centroid[0], centroid[1], c='black')
+    ax.grid(True)
+    fig.tight_layout()
+
+    plt.show()
+
 def test():
-    df = parse_csv(c.ACCIDENTS_2)
-    k = 6
+    df = parse_csv(c.MANY_CLUSTERS)
+    k = 5
     threshold = 0.1
-    clusters, centroids = kmeans(df, k, threshold)
+    clusters, centroids = kmeans(df, k, threshold, get_dist=get_euclidean_distances_normalized)
+    if 2 <= clusters[0].shape[1] <= 3:
+        plot_clusters(clusters, centroids)
     for i, cluster in enumerate(clusters):
         print()
         print(f'Cluster {i + 1}')
         print(f'Centroid: {centroids[i]}')
-        max, min, avg = get_max_min_avg(cluster, centroids[i])
-        print(f'Max Dist: {max}')
-        print(f'Min Dist: {min}')
-        print(f'Avg Dist: {avg}')
-        print('alt')
         print(f'Max Dist: {get_max_dist(cluster, centroids[i])}')
         print(f'Min Dist: {get_min_dist(cluster, centroids[i])}')
         print(f'Avg Dist: {get_avg_dist(cluster, centroids[i])}')
         print(f'Num. Points: {len(cluster)}')
-        print(f'SSE: N/A')
+        print(f'SSE: {get_sse(cluster, centroids[i])}')
         print()
         print(cluster)
 
