@@ -33,6 +33,7 @@ def dbscan(df: pd.DataFrame, epsilon: float, min_points: int):
             ### it does what i expect, haven't had chance to debug rest. It's late, and I really just need to look at
             # it when i'm not falling asleep.
             for neighbor in neighborhood:
+                # this is the point of frustration
                 pd.concat(new_neighborhood, rest[dists[neighbor] < epsilon])
             rest = rest.drop(new_neighborhood)
             cluster = pd.concat(cluster, neighborhood)
