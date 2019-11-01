@@ -10,15 +10,23 @@ class Datapoint:
         self.id = id
         self.data = data        #series
     def __str__(self):
-        return "id: %d " % self.id
+        return self.id
     def __repr__(self):
-        return "id: %d " % self.id
+        return self.id
 
 class Cluster:
     def __init__(self, datapoints, circumference):
         self.datapts = datapoints
         self.circ = circumference
         self.kids = []
+    def __repr__(self):
+        l = ""
+        r = ""
+        if len(self.kids) > 1:
+            l = self.kids[0].__repr__()
+            r = self.kids[1].__repr__()
+        return ', '.join(["%s" % x.id for x in self.datapts])
+        return l + " " + r + " " + ', '.join(["%s" % x.id for x in self.datapts])
 
 #numpy wrapper class to let JSON dumps read as primitives. accounts for certain csvs
 #https://stackoverflow.com/a/57915246     
@@ -75,6 +83,18 @@ def singleLinkDist(clusters):
                         minDist = dist
     return (minDist, minCl1, minCl2)
 
+def completeLinkDist(clusters):
+    maxDist = float("-inf")
+    for row in range(len(clusters)-1):
+        for col in range(row+1, len(clusters)):
+            for pt1 in clusters[row].datapts:
+                for pt2 in clusters[col].datapts:
+                    dist = euclidianDist(pt1, pt2)
+                    if dist > maxDist:
+                        maxCl1 = clusters[row]
+                        maxCl2 = clusters[col]
+                        maxDist = dist
+    return (maxDist, maxCl1, maxCl2)
 
 def displayJSONRecursion(tree):
     node = {}
@@ -98,11 +118,26 @@ def display(tree):
     node["nodes"].append(rightN)
     return node
 
+def displayClusters(tree, threshold, clusfile):
+    n = 1
+    if tree.circ > threshold:
+        n = displayClusters(tree.kids[0], threshold, clusfile)
+        n += displayClusters(tree.kids[1], threshold, clusfile)
+        return n
+    print('CLUSTER:\t{',end='child: ', file=clusfile)
+    print(tree.kids[0], end="", file=clusfile)
+    if len(tree.kids) > 1:
+        print("\n\t\t\tchild: ", end="", file=clusfile)
+        print(tree.kids[1], end= "", file=clusfile)
+    print("}",file=clusfile)
+    return n
+
+
 def main():
     fName = sys.argv[1]
-    threshold = 1.0
+    maxCirc = None
     if len(sys.argv) > 2:
-        threshold = sys.argv[2]
+        maxCirc = float(sys.argv[2])
     fIn = open(fName, "r")
     df = pd.read_csv(fName, header=None, skiprows=1)
     colsToUse = fIn.readline().strip("\n").split(",")
@@ -120,7 +155,11 @@ def main():
         dataset.append(newDataPt)
     tree = agglomerative(dataset)
     dict = display(tree)
-    with open('output.json', 'w') as outfile:
+    if (maxCirc):
+        with open('clusters.txt', 'w') as clus:
+            numClust = displayClusters(tree, maxCirc, clus)
+            print("%d clusters made" % numClust, file = clus)
+    with open('dendrograph.json', 'w') as outfile:
         json.dump(dict, outfile, indent =4, cls=NpEncoder)
 
 if __name__ == '__main__':
