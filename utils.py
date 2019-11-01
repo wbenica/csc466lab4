@@ -1,3 +1,4 @@
+import math
 from typing import Union, List
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
@@ -51,33 +52,25 @@ def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray, title: st
     :param clusters: a list of k DataFrames
     :param centroids: a 2D numpy array of the centroids of the clusters
     """
-    ax: plt.Subplot = None
-    if clusters[0].shape[1] == 2:
-        fig, ax = plt.subplots()
-        for cluster, centroid in zip(clusters, centroids):
-            ax.scatter(cluster[0], cluster[1])
-            if centroids is not None:
-                ax.scatter(centroid[0], centroid[1], c='black')
-        ax.grid(True)
-        fig.tight_layout()
-    elif len(centroids[0]) == 3:
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        for cluster, centroid in zip(clusters, centroids):
-            ax.scatter(cluster[0], cluster[1], cluster[2])
-            if centroids is not None:
-                ax.scatter(centroid[0], centroid[1], centroid[2])
-    elif len(centroids[0]) == 4:
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        for cluster, centroid in zip(clusters, centroids):
-            img1 = ax.scatter(cluster[0], cluster[1], cluster[2], c=cluster[3], cmap=plt.hot())
-            fig.colorbar(img1)
-            if centroids is not None:
-                img2 = ax.scatter(centroid[0], centroid[1], centroid[2], c=centroid[3], cmap=plt.hot())
-                fig.colorbar(img2)
-    ax.set_title(title)
-    plt.show()
+    if len(clusters) > 0 and 2 <= clusters[0].shape[1] <=3:
+        ax: plt.Subplot = None
+        if clusters[0].shape[1] == 2:
+            fig, ax = plt.subplots()
+            for cluster, centroid in zip(clusters, centroids):
+                ax.scatter(cluster[0], cluster[1])
+                if centroids is not None:
+                    ax.scatter(centroid[0], centroid[1], c='black')
+            ax.grid(True)
+            fig.tight_layout()
+        elif clusters[0].shape[1] == 3:
+            fig = plt.figure()
+            ax = fig.add_subplot(111, projection='3d')
+            for cluster, centroid in zip(clusters, centroids):
+                ax.scatter(cluster[0], cluster[1], cluster[2])
+                if centroids is not None:
+                    ax.scatter(centroid[0], centroid[1], centroid[2])
+        ax.set_title(title)
+        plt.show()
 
 
 def parse_csv(fn: str) -> pd.DataFrame:
@@ -88,6 +81,8 @@ def parse_csv(fn: str) -> pd.DataFrame:
         df = pd.read_csv(fn, names=header[1:], index_col=0,skiprows=1)
     else:
         df = pd.read_csv(fn, names=header, skiprows=1)
+    df = df.replace(r'^\s*$', np.nan, regex=True)
+    df = df.dropna(axis='columns')
     return df
 
 
@@ -99,3 +94,51 @@ def to_header(hrow):
     else:
         res = list(range(0,len(hrow)))
     return tuple(res)
+
+
+def get_max_dist(cluster, centroid):
+    cluster = np.absolute(cluster - centroid)
+    max_dist = np.max(cluster.sum(axis=0))
+    return math.sqrt(max_dist)
+
+
+def get_min_dist(cluster, centroid):
+    cluster = np.absolute(cluster - centroid)
+    min_dist = np.min(cluster.sum(axis=0))
+    return math.sqrt(min_dist)
+
+
+def get_avg_dist(cluster, centroid):
+    cluster = np.absolute(cluster - centroid)
+    if len(cluster) > 0:
+        avg_dist = cluster.mean().sum(axis=0)
+        return math.sqrt(avg_dist)
+    else:
+        return 0
+
+
+def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
+    variance = cluster - centroid
+    var_sq = np.square(variance).sum()
+    return var_sq.sum()
+
+
+def evaluate_clusters(centroids, clusters, df, fn, cluster_method=None):
+    if centroids is None:
+        centroids = clusters.mean()
+    if 2 <= clusters[0].shape[1] <= 3:
+        plot_clusters([df], np.array([df.mean().values]), cluster_method + f' {fn}')
+        plot_clusters(clusters, centroids, cluster_method + f' clustered {fn}')
+    for i, cluster in enumerate(clusters):
+        cluster = cluster.values if isinstance(cluster, pd.DataFrame) else cluster
+        centroids = [centroid.value if isinstance(centroid, pd.DataFrame) else centroid for centroid in centroids]
+        print()
+        print(f'Cluster {i + 1}')
+        print(f'Centroid: {centroids[i]}')
+        print(f'Max Dist: {get_max_dist(cluster, centroids[i])}')
+        print(f'Min Dist: {get_min_dist(cluster, centroids[i])}')
+        print(f'Avg Dist: {get_avg_dist(cluster, centroids[i])}')
+        print(f'Num. Points: {len(cluster)}')
+        print(f'SSE: {get_sse(cluster, centroids[i])}')
+        print()
+        print(cluster)
