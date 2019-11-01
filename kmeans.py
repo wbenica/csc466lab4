@@ -1,13 +1,13 @@
+import math
 import random
 import sys
-import math
 from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
 
 import constants as c
-
+from utils import drop_df
 # TODO: ACCIDENTS_3 has a comma at the end of every row, which messes things up for that dataset
 from utils import get_euclidean_distances, plot_clusters, parse_csv, get_max_dist, \
     get_min_dist, get_avg_dist, get_sse, evaluate_clusters
@@ -31,7 +31,7 @@ def select_centroids_smart(df: pd.DataFrame, k: int, get_dist=get_euclidean_dist
         furthest = np.argmax(dists)
         next_point = pd.DataFrame(df.iloc[furthest]).T
         points = points.append(next_point)
-        df = df.drop([df.index[furthest]])
+        df = drop_df(df, df.iloc[furthest])
         i += 1
     return points.values
 
@@ -43,6 +43,8 @@ def select_centroids_rand(df: pd.DataFrame, k: int) -> np.ndarray:
 
 
 def check_centroid_change(old_centroids, new_centroids, threshold):
+    if len(new_centroids) == 0:
+        return False
     change = abs((old_centroids - new_centroids).sum())
     return math.sqrt(change) < threshold
 
@@ -128,6 +130,8 @@ def test():
 
 # TODO: add command line options for centroid select and get dist, using getopts?
 def main():
+    np.set_printoptions(precision=3, floatmode='fixed')
+    pd.options.display.float_format = '{:.3f}'.format
     if len(sys.argv) >= 4:
         threshold = float(sys.argv[3])
     else:
@@ -140,8 +144,16 @@ def main():
             f'kmeans expected at least 2 arguments, got {len(sys.argv) - 1}')
     df = parse_csv(fn)
     clusters, centroids = kmeans(df, k, threshold)
-    evaluate_clusters(centroids, clusters, df, fn, 'kmeans')
+    results = evaluate_clusters(clusters, centroids, verbose=False)
+    totals = results.sum()
+    totals.name = 'totals'
+    results = results.append(totals)
+    print('\nSummary')
+    print(results)
+    if 2 <= clusters[0].shape[1] <= 4:
+        plot_clusters([df], np.array([df.mean().values]), f'kmeans {fn}')
+        plot_clusters(clusters, centroids, f'kmeans clustered {fn}')
 
 
 if __name__ == "__main__":
-    test()
+    main()

@@ -1,11 +1,9 @@
 import sys
-from utils import *
+
 import constants as c
+from utils import *
+from utils import drop_df
 
-
-def drop_df(df1: pd.DataFrame, df2: pd.DataFrame):
-    """removes rows from df1 that are also in df2"""
-    return pd.concat([df1, df2, df2]).drop_duplicates(keep=False)
 
 def dbscan(df: pd.DataFrame, epsilon: float, min_points: int):
     # a dataframe of the distances between all datapoints
@@ -71,7 +69,7 @@ def main():
     for cluster in clusters:
         print(cluster)
     plot_clusters(clusters, np.array([cluster.mean() for cluster in clusters]), f'dbscan {fn}')
-    evaluate_clusters([cluster.mean() for cluster in clusters], clusters, df, fn, 'dbscan')
+    evaluate_clusters(clusters, [cluster.mean() for cluster in clusters])
 
 
 if __name__ == "__main__":

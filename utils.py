@@ -1,9 +1,15 @@
 import math
 from typing import Union, List
-from mpl_toolkits.mplot3d import Axes3D
+
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+
+SSE = 'SSE'
+PTS = 'Num Points'
+AVG = 'Avg Dist'
+MIN = 'Min Dist'
+MAX = 'Max Dist'
 
 
 def get_euclidean_distances(mx_one: Union[pd.DataFrame, np.ndarray],
@@ -70,6 +76,7 @@ def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray, title: st
                 if centroids is not None:
                     ax.scatter(centroid[0], centroid[1], centroid[2])
         ax.set_title(title)
+        plt.tight_layout()
         plt.show()
 
 
@@ -123,22 +130,29 @@ def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
     return var_sq.sum()
 
 
-def evaluate_clusters(centroids, clusters, df, fn, cluster_method=None):
+def evaluate_clusters(clusters, centroids, verbose=False):
+    results = pd.DataFrame(columns=[MAX, MIN, AVG, SSE, PTS])
     if centroids is None:
         centroids = clusters.mean()
-    if 2 <= clusters[0].shape[1] <= 3:
-        plot_clusters([df], np.array([df.mean().values]), cluster_method + f' {fn}')
-        plot_clusters(clusters, centroids, cluster_method + f' clustered {fn}')
-    for i, cluster in enumerate(clusters):
-        cluster = cluster.values if isinstance(cluster, pd.DataFrame) else cluster
+    for i, clusters in enumerate(clusters):
+        clust_vals = clusters.values if isinstance(clusters, pd.DataFrame) else clusters
         centroids = [centroid.value if isinstance(centroid, pd.DataFrame) else centroid for centroid in centroids]
-        print()
-        print(f'Cluster {i + 1}')
-        print(f'Centroid: {centroids[i]}')
-        print(f'Max Dist: {get_max_dist(cluster, centroids[i])}')
-        print(f'Min Dist: {get_min_dist(cluster, centroids[i])}')
-        print(f'Avg Dist: {get_avg_dist(cluster, centroids[i])}')
-        print(f'Num. Points: {len(cluster)}')
-        print(f'SSE: {get_sse(cluster, centroids[i])}')
-        print()
-        print(cluster)
+        max = get_max_dist(clust_vals, centroids[i])
+        min = get_min_dist(clust_vals, centroids[i])
+        avg = get_avg_dist(clust_vals, centroids[i])
+        num_points = len(clust_vals)
+        sse = get_sse(clust_vals, centroids[i])
+        data = pd.Series([max, min, avg, num_points, sse], name=str(i + 1), index=[MAX, MIN, AVG, PTS, SSE])
+        results = results.append(data)
+        if verbose:
+            print()
+            print(f'Cluster {i + 1}')
+            print(f'Centroid: {centroids[i]}')
+            print()
+            print(clusters)
+    return results
+
+
+def drop_df(df1: pd.DataFrame, df2: pd.DataFrame):
+    """removes rows from df1 that are also in df2"""
+    return pd.concat([df1, df2, df2]).drop_duplicates(keep=False)
