@@ -118,24 +118,24 @@ def display(tree):
     node["nodes"].append(rightN)
     return node
 
-def displayClusters(tree, threshold):
+def displayClusters(tree, threshold, clusfile):
     n = 1
     if tree.circ > threshold:
-        n = displayClusters(tree.kids[0], threshold)
-        n += displayClusters(tree.kids[1], threshold)
+        n = displayClusters(tree.kids[0], threshold, clusfile)
+        n += displayClusters(tree.kids[1], threshold, clusfile)
         return n
-    print('CLUSTER:\t{',end='child: ')
-    print(tree.kids[0], end="")
+    print('CLUSTER:\t{',end='child: ', file=clusfile)
+    print(tree.kids[0], end="", file=clusfile)
     if len(tree.kids) > 1:
-        print("\n\t\tchild: ", end="")
-        print(tree.kids[1], end= "")
-    print("}")
+        print("\n\t\t\tchild: ", end="", file=clusfile)
+        print(tree.kids[1], end= "", file=clusfile)
+    print("}",file=clusfile)
     return n
 
 
 def main():
     fName = sys.argv[1]
-    maxCirc = float("inf")
+    maxCirc = None
     if len(sys.argv) > 2:
         maxCirc = float(sys.argv[2])
     fIn = open(fName, "r")
@@ -155,9 +155,11 @@ def main():
         dataset.append(newDataPt)
     tree = agglomerative(dataset)
     dict = display(tree)
-    numClust = displayClusters(tree, maxCirc)
-    print("%d clusters made" % numClust)
-    with open('output.json', 'w') as outfile:
+    if (maxCirc):
+        with open('clusters.txt', 'w') as clus:
+            numClust = displayClusters(tree, maxCirc, clus)
+            print("%d clusters made" % numClust, file = clus)
+    with open('dendrograph.json', 'w') as outfile:
         json.dump(dict, outfile, indent =4, cls=NpEncoder)
 
 if __name__ == '__main__':

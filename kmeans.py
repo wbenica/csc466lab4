@@ -1,52 +1,15 @@
 import random
 import sys
 import math
-from typing import Union, List, Tuple
+from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
 
 import constants as c
-from parse_data import parse_csv
 
-
-def get_manhattan_distances(mx_one: Union[pd.DataFrame, np.ndarray],
-                            mx_two: Union[pd.DataFrame, np.ndarray] = None) -> np.ndarray:
-    """calculates the sum of the manhattan distance between each row in mx_one and all
-    the rows in mx_two
-    :param mx_one: a DataFrame or np.ndarray of the data points whose distances you want to know
-    :param mx_two: a DataFrame or np.ndarray of the data points from which you are calculating distance
-    :return: an ndarray table of the distances between data points in mx_one and mx_2"""
-    if mx_two is None:
-        mx_two = mx_one
-    if isinstance(mx_one, pd.DataFrame):
-        mx_one: np.ndarray = mx_one.values
-    if isinstance(mx_two, pd.DataFrame):
-        mx_two: np.ndarray = mx_two.values
-    one_ptp = mx_one.ptp(axis=0)
-    one_min = mx_one.min(axis=0)
-    mx_one = (mx_one - one_min) / one_ptp
-    mx_two = (mx_two - one_min) / one_ptp
-    mx_one_sq = np.square(mx_one).sum(axis=1)[:, np.newaxis]
-    mx_two_sq = np.square(mx_two).sum(axis=1)
-    mtx_prod = mx_one.dot(mx_two.transpose())
-    return mx_one_sq + mx_two_sq - 2 * mtx_prod
-
-
-def get_euclidean_distances(mx_one: Union[pd.DataFrame, np.ndarray], mx_two: Union[pd.DataFrame, np.ndarray] = None) \
-        -> np.ndarray:
-    """returns a numpy array of the squared distances between mx_one and mx_two"""
-    if mx_two is None:
-        mx_two = mx_one
-    if isinstance(mx_one, pd.DataFrame):
-        mx_one = mx_one.values
-    if isinstance(mx_two, pd.DataFrame):
-        mx_two = mx_two.values
-    one_ptp = mx_one.ptp(axis=0)
-    one_min = mx_one.min(axis=0)
-    mx_one = (mx_one - one_min) / one_ptp
-    mx_two = (mx_two - one_min) / one_ptp
-    return np.square(mx_one[:] - mx_two[:])
+# TODO: ACCIDENTS_3 has a comma at the end of every row, which messes things up for that dataset
+from utils import get_euclidean_distances_normalized, get_euclidean_distances, plot_clusters, parse_csv
 
 
 def shuffle(df: pd.DataFrame) -> np.ndarray:
@@ -54,12 +17,12 @@ def shuffle(df: pd.DataFrame) -> np.ndarray:
     n = df.shape[0]
     indices = np.array(range(n))
     random.shuffle(indices)
-    res = np.ndarray([df.iloc[i] for i in indices])
+    res = np.array([df.iloc[i] for i in indices])
     return res
 
 
 # TODO: think about whether it's better to return a dataframe so that row_ids are passed along
-def select_centroids_smart(df: pd.DataFrame, k: int, get_dist=get_manhattan_distances) -> np.ndarray:
+def select_centroids_smart(df: pd.DataFrame, k: int, get_dist=get_euclidean_distances) -> np.ndarray:
     points = pd.DataFrame(df.mean(axis=0)).T
     i = 1
     while i < k:
@@ -80,6 +43,7 @@ def select_centroids_rand(df: pd.DataFrame, k: int) -> np.ndarray:
 
 def check_centroid_change(old_centroids, new_centroids, threshold):
     change = abs((old_centroids - new_centroids).sum())
+    print(f'change: {change}')
     return math.sqrt(change) < threshold
 
 
@@ -98,18 +62,32 @@ def check_num_reassignments(clusters, old_clusters):
     return num_reassignments < 2
 
 
-def is_stopping_condition(old_clusters, clusters, old_centroids, new_centroids, threshold):
-    num_reassigns = check_num_reassignments(clusters, old_clusters)
+def check_sse_change(old_clusters, new_clusters, old_centroids, new_centroids):
+    if old_clusters is None:
+        return False
+    old_sse = np.array([get_sse(old_clusters[i], old_centroids[i]) for i in range(len(old_clusters))]).sum()
+    new_sse = np.array([get_sse(new_clusters[i], new_centroids[i]) for i in range(len(new_centroids))]).sum()
+    change = new_sse - old_sse
+    return change < 0 and change / old_sse < 0.005
+
+
+def is_stopping_condition(old_clusters, new_clusters, old_centroids, new_centroids, threshold):
+    num_reassigns = check_num_reassignments(new_clusters, old_clusters)
     change_centroids = check_centroid_change(old_centroids, new_centroids, threshold)
+    sse_chng = check_sse_change(old_clusters, new_clusters, old_centroids, new_centroids)
+    # sse_chng = False
+    print('\nSTOP CHECK:')
     if num_reassigns:
         print('reass')
     if change_centroids:
         print('centrs')
-    return num_reassigns or change_centroids
+    if sse_chng:
+        print('sse')
+    return change_centroids or num_reassigns or sse_chng
 
 
 def kmeans(df: pd.DataFrame, k: int, threshold=None, select_centroids=select_centroids_smart,
-           get_dist=get_manhattan_distances) -> Tuple[List[pd.DataFrame], np.ndarray]:
+           get_dist=get_euclidean_distances) -> Tuple[List[pd.DataFrame], np.ndarray]:
     centroids = select_centroids(df, k)
     old_clusters = None
     t = 0
@@ -136,6 +114,55 @@ def kmeans(df: pd.DataFrame, k: int, threshold=None, select_centroids=select_cen
     return clusters, centroids
 
 
+def get_max_dist(cluster, centroid):
+    cluster = np.absolute(cluster.values - centroid)
+    max_dist = np.max(cluster.sum(axis=0))
+    return math.sqrt(max_dist)
+
+
+def get_min_dist(cluster, centroid):
+    cluster = np.absolute(cluster.values - centroid)
+    min_dist = np.min(cluster.sum(axis=0))
+    return math.sqrt(min_dist)
+
+
+def get_avg_dist(cluster, centroid):
+    cluster = np.absolute(cluster.values - centroid)
+    if len(cluster) > 0:
+        avg_dist = cluster.mean().sum(axis=0)
+        return math.sqrt(avg_dist)
+    else:
+        return 0
+
+def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
+    variance = cluster - centroid
+    var_sq = np.square(variance).sum()
+    return var_sq.sum()
+
+
+def test():
+    fn = c.MANY_CLUSTERS
+    df = parse_csv(fn)
+    k = 4
+    threshold = 0.1
+    clusters, centroids = kmeans(df, k, threshold, get_dist=get_euclidean_distances)
+    if 2 <= clusters[0].shape[1] <= 4:
+        plot_clusters([df], np.array([df.mean().values]), f'kmeans {fn}')
+        plot_clusters(clusters, centroids, f'kmeans clustered {fn}')
+    for i, cluster in enumerate(clusters):
+        print()
+        print(f'Cluster {i + 1}')
+        print(f'Centroid: {centroids[i]}')
+        print(f'Max Dist: {get_max_dist(cluster, centroids[i])}')
+        print(f'Min Dist: {get_min_dist(cluster, centroids[i])}')
+        print(f'Avg Dist: {get_avg_dist(cluster, centroids[i])}')
+        print(f'Num. Points: {len(cluster)}')
+        print(f'SSE: {get_sse(cluster, centroids[i])}')
+        print()
+        print(cluster)
+
+
+# TODO: add command line options for centroid select and get dist, using getopts?
 def main():
     if len(sys.argv) >= 4:
         threshold = sys.argv[3]
@@ -151,41 +178,5 @@ def main():
     kmeans(df, k, threshold)
 
 
-def get_max_dist(cluster, centroid):
-    cluster = np.absolute(cluster.values - centroid)
-    max_dist = np.max(cluster.sum(axis=0))
-    return math.sqrt(max_dist)
-
-
-def get_min_dist(cluster, centroid):
-    cluster = np.absolute(cluster.values - centroid)
-    min_dist = np.min(cluster.sum(axis=0))
-    return math.sqrt(min_dist)
-
-
-def get_avg_dist(cluster, centroid):
-    cluster = np.absolute(cluster.values - centroid)
-    avg_dist = cluster.mean().sum(axis=0)
-    return math.sqrt(avg_dist)
-
-
-def test():
-    df = parse_csv(c.PLANETS)
-    k = 5
-    threshold = 0.1
-    clusters, centroids = kmeans(df, k, threshold)
-    for i, cluster in enumerate(clusters):
-        print()
-        print(f'Cluster {i + 1}')
-        print(f'Centroid: {centroids[i]}')
-        print(f'Max Dist: {get_max_dist(cluster, centroids[i])}')
-        print(f'Min Dist: {get_min_dist(cluster, centroids[i])}')
-        print(f'Avg Dist: {get_avg_dist(cluster, centroids[i])}')
-        print(f'Num. Points: {len(cluster)}')
-        print()
-        print(cluster)
-
-
-# TODO: add command line options for centroid select and get dist, using getopts?
 if __name__ == "__main__":
     test()
