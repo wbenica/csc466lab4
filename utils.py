@@ -77,6 +77,7 @@ def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray, title: st
                     ax.scatter(centroid[0], centroid[1], centroid[2])
         ax.set_title(title)
         plt.tight_layout()
+        plt.savefig(f'./graphs/clusters/{title}')
         plt.show()
 
 

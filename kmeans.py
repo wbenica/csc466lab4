@@ -150,7 +150,7 @@ def main():
     results = results.append(totals)
     print('\nSummary')
     print(results)
-    if 2 <= clusters[0].shape[1] <= 4:
+    if 2 <= clusters[0].shape[1] <= 3:
         plot_clusters([df], np.array([df.mean().values]), f'kmeans {fn}')
         plot_clusters(clusters, centroids, f'kmeans clustered {fn}')
 
