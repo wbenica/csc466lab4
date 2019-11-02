@@ -1,17 +1,16 @@
 import sys
-from utils import *
+
 import constants as c
+from utils import *
+from utils import drop_df
 
-
-def drop_df(df1: pd.DataFrame, df2: pd.DataFrame):
-    """removes rows from df1 that are also in df2"""
-    return pd.concat([df1, df2, df2]).drop_duplicates(keep=False)
 
 def dbscan(df: pd.DataFrame, epsilon: float, min_points: int):
     # a dataframe of the distances between all datapoints
-    dists = pd.DataFrame(get_euclidean_distances(df), index=df.index.values)
+    dists = pd.DataFrame(get_euclidean_distances(df), index=df.index, columns=df.index)
     # a series of the number of neighbors for each datapoint
     num_neighbors = dists[dists.le(epsilon)].count() - 1
+    num_neighbors.index = df.index
     # a dataframe of "core" points - datapoints that have at least min_points neighbors within distance epsilon
     core = df[num_neighbors > min_points]
     # the datapoints without any neighbors
@@ -31,7 +30,7 @@ def dbscan(df: pd.DataFrame, epsilon: float, min_points: int):
         cluster = pd.DataFrame([candidate])
         while True:
             new_neighborhood = pd.DataFrame()
-            for neighbor in neighborhood:
+            for neighbor in neighborhood.index.values:
                 if new_neighborhood.empty:
                     new_neighborhood = rest[dists[neighbor].le(epsilon)]
                 else:
@@ -62,7 +61,7 @@ def main():
             f'dbscan expected 3 arguments, got {len(sys.argv) - 1}')
     else:
         fn = sys.argv[1]
-        epsilon = int(sys.argv[2])
+        epsilon = float(sys.argv[2])
         num_points = int(sys.argv[3])
 
     df = parse_csv(fn)
@@ -70,6 +69,7 @@ def main():
     for cluster in clusters:
         print(cluster)
     plot_clusters(clusters, np.array([cluster.mean() for cluster in clusters]), f'dbscan {fn}')
+    evaluate_clusters(clusters, [cluster.mean() for cluster in clusters])
 
 
 if __name__ == "__main__":

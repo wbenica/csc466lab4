@@ -1,15 +1,16 @@
+import math
 import random
 import sys
-import math
 from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
 
 import constants as c
-
+from utils import drop_df
 # TODO: ACCIDENTS_3 has a comma at the end of every row, which messes things up for that dataset
-from utils import get_euclidean_distances_normalized, get_euclidean_distances, plot_clusters, parse_csv
+from utils import get_euclidean_distances, plot_clusters, parse_csv, get_max_dist, \
+    get_min_dist, get_avg_dist, get_sse, evaluate_clusters
 
 
 def shuffle(df: pd.DataFrame) -> np.ndarray:
@@ -30,7 +31,7 @@ def select_centroids_smart(df: pd.DataFrame, k: int, get_dist=get_euclidean_dist
         furthest = np.argmax(dists)
         next_point = pd.DataFrame(df.iloc[furthest]).T
         points = points.append(next_point)
-        df = df.drop([df.index[furthest]])
+        df = drop_df(df, df.iloc[furthest])
         i += 1
     return points.values
 
@@ -42,8 +43,9 @@ def select_centroids_rand(df: pd.DataFrame, k: int) -> np.ndarray:
 
 
 def check_centroid_change(old_centroids, new_centroids, threshold):
+    if len(new_centroids) == 0:
+        return False
     change = abs((old_centroids - new_centroids).sum())
-    print(f'change: {change}')
     return math.sqrt(change) < threshold
 
 
@@ -56,7 +58,6 @@ def check_num_reassignments(clusters, old_clusters):
             for key in clust:
                 if key not in old_clust:
                     num_reassignments += 1
-        print(f'reassign: {num_reassignments}')
     else:
         return False
     return num_reassignments < 2
@@ -75,14 +76,6 @@ def is_stopping_condition(old_clusters, new_clusters, old_centroids, new_centroi
     num_reassigns = check_num_reassignments(new_clusters, old_clusters)
     change_centroids = check_centroid_change(old_centroids, new_centroids, threshold)
     sse_chng = check_sse_change(old_clusters, new_clusters, old_centroids, new_centroids)
-    # sse_chng = False
-    print('\nSTOP CHECK:')
-    if num_reassigns:
-        print('reass')
-    if change_centroids:
-        print('centrs')
-    if sse_chng:
-        print('sse')
     return change_centroids or num_reassigns or sse_chng
 
 
@@ -105,7 +98,6 @@ def kmeans(df: pd.DataFrame, k: int, threshold=None, select_centroids=select_cen
             break
         # check stopping conditions
         if is_stopping_condition(old_clusters, clusters, centroids, new_centroids, threshold):
-            print('stopped!')
             break
         centroids = new_centroids
         old_clusters = clusters
@@ -114,34 +106,8 @@ def kmeans(df: pd.DataFrame, k: int, threshold=None, select_centroids=select_cen
     return clusters, centroids
 
 
-def get_max_dist(cluster, centroid):
-    cluster = np.absolute(cluster.values - centroid)
-    max_dist = np.max(cluster.sum(axis=0))
-    return math.sqrt(max_dist)
-
-
-def get_min_dist(cluster, centroid):
-    cluster = np.absolute(cluster.values - centroid)
-    min_dist = np.min(cluster.sum(axis=0))
-    return math.sqrt(min_dist)
-
-
-def get_avg_dist(cluster, centroid):
-    cluster = np.absolute(cluster.values - centroid)
-    if len(cluster) > 0:
-        avg_dist = cluster.mean().sum(axis=0)
-        return math.sqrt(avg_dist)
-    else:
-        return 0
-
-def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
-    variance = cluster - centroid
-    var_sq = np.square(variance).sum()
-    return var_sq.sum()
-
-
 def test():
-    fn = c.MANY_CLUSTERS
+    fn = c.ACCIDENTS_3
     df = parse_csv(fn)
     k = 4
     threshold = 0.1
@@ -164,19 +130,30 @@ def test():
 
 # TODO: add command line options for centroid select and get dist, using getopts?
 def main():
+    np.set_printoptions(precision=3, floatmode='fixed')
+    pd.options.display.float_format = '{:.3f}'.format
     if len(sys.argv) >= 4:
-        threshold = sys.argv[3]
+        threshold = float(sys.argv[3])
     else:
         threshold = None
     if len(sys.argv) >= 3:
         fn = sys.argv[1]
-        k = sys.argv[2]
+        k = int(sys.argv[2])
     else:
         raise TypeError(
             f'kmeans expected at least 2 arguments, got {len(sys.argv) - 1}')
     df = parse_csv(fn)
-    kmeans(df, k, threshold)
+    clusters, centroids = kmeans(df, k, threshold)
+    results = evaluate_clusters(clusters, centroids, verbose=False)
+    totals = results.sum()
+    totals.name = 'totals'
+    results = results.append(totals)
+    print('\nSummary')
+    print(results)
+    if 2 <= clusters[0].shape[1] <= 3:
+        plot_clusters([df], np.array([df.mean().values]), f'kmeans {fn}')
+        plot_clusters(clusters, centroids, f'kmeans clustered {fn}')
 
 
 if __name__ == "__main__":
-    test()
+    main()
