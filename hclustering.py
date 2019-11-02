@@ -1,3 +1,8 @@
+#CSC466 F19 Lab 4
+#Sarah Bae, shbae@calpoly.edu
+#Wesley Benica, wbenica@calpoly.edu
+#A program read and parse input files of datasets to use hierarchical clustering and output a dendrogram showing the hierarchical cluster tree in an output file "outputDendrogram.json". If a threshold for maximum circumference is given as a parameter, we also output the clusters from cutting the dendrogram at the threshold in "clusters.txt". Clusters are made by single link distance, and distance is computed with the euclidian formula.
+
 import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
