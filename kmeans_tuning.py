@@ -1,9 +1,6 @@
-import matplotlib.pyplot as plt
-import pandas as pd
-
 import constants as c
 from kmeans import kmeans, select_centroids_rand
-from utils import SSE, evaluate_clusters, parse_csv, get_euclidean_distances_normalized
+from utils import *
 
 DSS_DK = 'dsse/dk'
 
@@ -27,18 +24,6 @@ def hyper_tune_k(df, fn):
     return best_k[0]
 
 
-def print_and_plot(fn, table):
-    print(fn)
-    print(table)
-    print()
-    fig, ax = plt.subplots()
-    ax.plot(table.index.values, table.iloc[:, 0])
-    sfn = fn.split('/')[-1].split('.')[0]
-    ax.title.set_text(f'SSE vs k {sfn}')
-    plt.savefig(f'./graphs/k_vs_sse/{sfn}')
-    plt.show()
-
-
 def hyper_tune_t(df, k):
     table = pd.DataFrame(columns=[SSE])
     for t in [(x + 1) for x in range(20)]:
@@ -53,7 +38,7 @@ def hyper_tune_t(df, k):
 
 
 def kmeans_hyper_tuning(fn):
-    df = parse_csv(fn)
+    df, class_id = parse_csv(fn)
     k = hyper_tune_k(df, fn)
     t = hyper_tune_t(df, k)
     return k, t
@@ -68,6 +53,18 @@ def kmeans_k_t_selection():
     return res
 
 
+def print_and_plot(fn, table):
+    print(fn)
+    print(table)
+    print()
+    fig, ax = plt.subplots()
+    ax.plot(table.index.values, table.iloc[:, 0])
+    sfn = fn.split('/')[-1].split('.')[0]
+    ax.title.set_text(f'SSE vs k {sfn}')
+    plt.savefig(f'./graphs/k_vs_sse/{sfn}')
+    plt.show()
+
+
 if __name__ == '__main__':
     print(kmeans_k_t_selection())
 
@@ -80,7 +77,7 @@ def kmeans_dist_and_centroid_selection():
         clusters = [pd.DataFrame()] * 4
         centroids = [pd.DataFrame()] * 4
         print(file)
-        df = parse_csv(file)
+        df, class_id = parse_csv(file)
         print('CENTROID SELECTION: random')
         print('DISTANCES: normalized')
         clusters[0], centroids[0] = kmeans(df, best_k_t.loc[file, 'k'], best_k_t.loc[file, 't'],
@@ -145,7 +142,6 @@ def kmeans_dist_and_centroid_selection():
                     ax[row, col].set_title(tests[i])
                     ax[row, col].grid(True)
             plt.tight_layout()
-            # plt.title.set_text(f'{sfn} Distance Measure and Centroid Selection')
             title = f'./graphs/dist_cent_methods/{sfn}.png'
             plt.savefig(title)
             plt.show()

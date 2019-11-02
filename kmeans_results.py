@@ -9,7 +9,7 @@ def kmeans_run_all():
     for fn in c.ALL:
         k = c.ks[fn]
         t = 1
-        df = parse_csv(fn)
+        df, class_id = parse_csv(fn)
         clusters, centroids = kmeans(df, k, t)
         results = evaluate_clusters(clusters, centroids, verbose=True)
         totals = results.sum()

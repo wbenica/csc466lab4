@@ -108,7 +108,7 @@ def kmeans(df: pd.DataFrame, k: int, threshold=None, select_centroids=select_cen
 
 def test():
     fn = c.ACCIDENTS_3
-    df = parse_csv(fn)
+    df, class_id = parse_csv(fn)
     k = 4
     threshold = 0.1
     clusters, centroids = kmeans(df, k, threshold, get_dist=get_euclidean_distances)
@@ -142,7 +142,7 @@ def main():
     else:
         raise TypeError(
             f'kmeans expected at least 2 arguments, got {len(sys.argv) - 1}')
-    df = parse_csv(fn)
+    df, class_id = parse_csv(fn)
     clusters, centroids = kmeans(df, k, threshold)
     results = evaluate_clusters(clusters, centroids, verbose=False)
     totals = results.sum()

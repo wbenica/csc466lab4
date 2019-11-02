@@ -1,5 +1,4 @@
-import math
-from typing import Union, List
+from typing import Union, List, Tuple, Optional
 
 import numpy as np
 import pandas as pd
@@ -81,7 +80,8 @@ def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray, title: st
         plt.show()
 
 
-def parse_csv(fn: str) -> pd.DataFrame:
+def parse_csv(fn: str) -> Tuple[pd.DataFrame, pd.Series]:
+    class_id: Optional[pd.Series] = None
     with open(fn, 'r') as f:
         h = f.readline().split(',')
     header = to_header(h)
@@ -91,41 +91,57 @@ def parse_csv(fn: str) -> pd.DataFrame:
         df = pd.read_csv(fn, names=header, skiprows=1)
     df = df.replace(r'^\s*$', np.nan, regex=True)
     df = df.dropna(axis='columns')
-    return df
+    if header[-1] == 'class':
+        class_id = df.iloc[:, -1]
+        class_id.index = df.index
+        df = df.drop(columns='class')
+    return df, class_id
 
 
 def to_header(hrow):
     res = []
+    has_classes = False
+    end = len(hrow)
+    if int(hrow[-1]) == 0:
+        has_classes = True
+        end -= 1
     if int(hrow[0]) == 0:
+        end -= 1
         res.append('row_id')
-        res += list(range(0,len(hrow)-1))
+        res += list(range(0, end))
     else:
-        res = list(range(0,len(hrow)))
+        res = list(range(0, end))
+    if has_classes:
+        res.append('class')
     return tuple(res)
 
 
 def get_max_dist(cluster, centroid):
-    cluster = np.absolute(cluster - centroid)
-    max_dist = np.max(cluster.sum(axis=0))
-    return math.sqrt(max_dist)
+    if isinstance(centroid, pd.Series):
+        centroid = centroid.values
+    max_dst = get_euclidean_distances(cluster, pd.DataFrame([centroid])).max()
+    return max_dst
 
 
 def get_min_dist(cluster, centroid):
-    cluster = np.absolute(cluster - centroid)
-    min_dist = np.min(cluster.sum(axis=0))
-    return math.sqrt(min_dist)
+    if isinstance(centroid, pd.Series):
+        centroid = centroid.values
+    min_dst = get_euclidean_distances(cluster, pd.DataFrame([centroid])).min()
+    return min_dst
 
 
 def get_avg_dist(cluster, centroid):
-    cluster = np.absolute(cluster - centroid)
-    if len(cluster) > 0:
-        avg_dist = cluster.mean().sum(axis=0)
-        return math.sqrt(avg_dist)
-    else:
-        return 0
+    if isinstance(centroid, pd.Series):
+        centroid = centroid.values
+    mean_dst = get_euclidean_distances(cluster, pd.DataFrame([centroid])).mean()
+    return mean_dst
 
 
 def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
+    if isinstance(cluster, pd.DataFrame):
+        cluster = cluster.values
+    if isinstance(centroid, pd.Series):
+        centroid = centroid.values
     variance = cluster - centroid
     var_sq = np.square(variance).sum()
     return var_sq.sum()
@@ -134,7 +150,7 @@ def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
 def evaluate_clusters(clusters, centroids, verbose=False):
     results = pd.DataFrame(columns=[MAX, MIN, AVG, SSE, PTS])
     if centroids is None:
-        centroids = clusters.mean()
+        centroids = [cluster.mean() for cluster in clusters]
     for i, clusters in enumerate(clusters):
         clust_vals = clusters.values if isinstance(clusters, pd.DataFrame) else clusters
         centroids = [centroid.value if isinstance(centroid, pd.DataFrame) else centroid for centroid in centroids]
