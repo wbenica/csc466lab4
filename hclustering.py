@@ -141,6 +141,7 @@ def displayClusters(tree, threshold, clusfile):
 def main():
     fName = sys.argv[1]
     maxCirc = None
+    rowIds = None
     if len(sys.argv) > 2:
         maxCirc = float(sys.argv[2])
     fIn = open(fName, "r")
@@ -156,7 +157,12 @@ def main():
 
     dataset = []
     for index, datapt in df.iterrows():
-        newDataPt = Datapoint(rowIds[index], datapt)
+        if rowIds is not None:
+            id = rowIds[index]
+        else:
+            datapt.index += 1
+            id = index + 1
+        newDataPt = Datapoint(id, datapt)
         dataset.append(newDataPt)
     tree = agglomerative(dataset)
     dict = display(tree)
@@ -164,7 +170,7 @@ def main():
         with open('clusters.txt', 'w') as clus:
             numClust = displayClusters(tree, maxCirc, clus)
             print("%d clusters made" % numClust, file = clus)
-    with open('dendrograph.json', 'w') as outfile:
+    with open('outputDendrogram.json', 'w') as outfile:
         json.dump(dict, outfile, indent =4, cls=NpEncoder)
 
 if __name__ == '__main__':
