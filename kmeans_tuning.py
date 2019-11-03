@@ -66,14 +66,12 @@ def print_and_plot(fn, table):
     plt.show()
 
 
-if __name__ == '__main__':
-    print(kmeans_k_t_selection())
 
 
 def kmeans_dist_and_centroid_selection():
     best_k_t = kmeans_k_t_selection()
     tests = ['rand/norm', 'rand/raw', 'smart/norm', 'smart/raw']
-    for file in c.ALL:
+    for file in c.TWO_DIM:
         results = [pd.DataFrame()] * 4
         clusters = [pd.DataFrame()] * 4
         centroids = [pd.DataFrame()] * 4
@@ -146,3 +144,8 @@ def kmeans_dist_and_centroid_selection():
             title = f'./graphs/dist_cent_methods/{sfn}.png'
             plt.savefig(title)
             plt.show()
+
+
+if __name__ == '__main__':
+    kmeans_dist_and_centroid_selection()
+    # print(kmeans_k_t_selection())
