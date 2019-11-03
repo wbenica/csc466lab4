@@ -1,0 +1,5 @@
+CLUSTER:	{child: Seal
+			child: Dolphin}
+CLUSTER:	{child: Whale, Deer, Reindeer
+			child: Elephant, Dog, Rabbit, Rat, Hippo, Zebra, Bison, Camel, Llama, Orangutan, Monkey, Horse, Donkey, Mule, Cat, Guinea Pig, Pig, Buffalo, Fox, Sheep}
+2 clusters made
