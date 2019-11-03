@@ -89,17 +89,18 @@ def singleLinkDist(clusters):
     return (minDist, minCl1, minCl2)
 
 def completeLinkDist(clusters):
-    maxDist = float("-inf")
+    distances = []
     for row in range(len(clusters)-1):
         for col in range(row+1, len(clusters)):
+            maxDist = float("-inf")
             for pt1 in clusters[row].datapts:
                 for pt2 in clusters[col].datapts:
                     dist = euclidianDist(pt1, pt2)
                     if dist > maxDist:
-                        maxCl1 = clusters[row]
-                        maxCl2 = clusters[col]
                         maxDist = dist
-    return (maxDist, maxCl1, maxCl2)
+            distances.append(maxDist, clusters[row], clusters[col])
+    distances.sort()
+    return distances[0]
 
 def displayJSONRecursion(tree):
     node = {}
@@ -161,7 +162,7 @@ def main():
             id = rowIds[index]
         else:
             datapt.index += 1
-            id = index + 1
+            id = index
         newDataPt = Datapoint(id, datapt)
         dataset.append(newDataPt)
     tree = agglomerative(dataset)
