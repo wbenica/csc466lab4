@@ -3,6 +3,7 @@ from typing import Union, List, Tuple, Optional
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 SSE = 'SSE'
 PTS = 'Num Points'
@@ -152,21 +153,22 @@ def evaluate_clusters(clusters, centroids, verbose=False):
     if centroids is None:
         centroids = [cluster.mean() for cluster in clusters]
     for i, clusters in enumerate(clusters):
-        clust_vals = clusters.values if isinstance(clusters, pd.DataFrame) else clusters
-        centroids = [centroid.value if isinstance(centroid, pd.DataFrame) else centroid for centroid in centroids]
-        max = get_max_dist(clust_vals, centroids[i])
-        min = get_min_dist(clust_vals, centroids[i])
-        avg = get_avg_dist(clust_vals, centroids[i])
-        num_points = len(clust_vals)
-        sse = get_sse(clust_vals, centroids[i])
-        data = pd.Series([max, min, avg, num_points, sse], name=str(i + 1), index=[MAX, MIN, AVG, PTS, SSE])
-        results = results.append(data)
-        if verbose:
-            print()
-            print(f'Cluster {i + 1}')
-            print(f'Centroid: {centroids[i]}')
-            print()
-            print(clusters)
+        if not clusters.empty:
+            clust_vals = clusters.values if isinstance(clusters, pd.DataFrame) else clusters
+            centroids = [centroid.value if isinstance(centroid, pd.DataFrame) else centroid for centroid in centroids]
+            max = get_max_dist(clust_vals, centroids[i])
+            min = get_min_dist(clust_vals, centroids[i])
+            avg = get_avg_dist(clust_vals, centroids[i])
+            num_points = len(clust_vals)
+            sse = get_sse(clust_vals, centroids[i])
+            data = pd.Series([max, min, avg, num_points, sse], name=str(i + 1), index=[MAX, MIN, AVG, PTS, SSE])
+            results = results.append(data)
+            if verbose:
+                print()
+                print(f'Cluster {i + 1}')
+                print(f'Centroid: {centroids[i]}')
+                print()
+                print(clusters)
     return results
 
 

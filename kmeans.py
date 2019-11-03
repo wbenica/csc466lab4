@@ -83,7 +83,6 @@ def kmeans(df: pd.DataFrame, k: int, threshold=None, select_centroids=select_cen
            get_dist=get_euclidean_distances) -> Tuple[List[pd.DataFrame], np.ndarray]:
     centroids = select_centroids(df, k)
     old_clusters = None
-    t = 0
     while True:
         # get distances to centroids
         dists = get_dist(df, centroids)
@@ -94,23 +93,20 @@ def kmeans(df: pd.DataFrame, k: int, threshold=None, select_centroids=select_cen
             mask = cluster_rankings[:, i] == 0
             clusters.append(df[mask])
         new_centroids = np.array([cluster.mean() for cluster in clusters])
-        if t == 100:
-            break
         # check stopping conditions
         if is_stopping_condition(old_clusters, clusters, centroids, new_centroids, threshold):
             break
         centroids = new_centroids
         old_clusters = clusters
-        t += 1
         # break
     return clusters, centroids
 
 
 def test():
-    fn = c.ACCIDENTS_3
+    fn = c.ACCIDENTS_1
     df, class_id = parse_csv(fn)
-    k = 4
-    threshold = 0.1
+    k = c.ks[fn]
+    threshold = 1
     clusters, centroids = kmeans(df, k, threshold, get_dist=get_euclidean_distances)
     if 2 <= clusters[0].shape[1] <= 4:
         plot_clusters([df], np.array([df.mean().values]), f'kmeans {fn}')
