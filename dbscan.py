@@ -5,7 +5,7 @@ from utils import *
 from utils import drop_df
 
 
-def dbscan(df: pd.DataFrame, epsilon: float, min_points: int):
+def dbscan(df: pd.DataFrame, epsilon: float, min_points: int) -> List[pd.DataFrame]:
     # a dataframe of the distances between all datapoints
     dists = pd.DataFrame(get_euclidean_distances(df), index=df.index, columns=df.index)
     # a series of the number of neighbors for each datapoint
@@ -19,11 +19,12 @@ def dbscan(df: pd.DataFrame, epsilon: float, min_points: int):
     rest = drop_df(df, noise)
     clusters = []
 
-    ### It's pretty much a mess from this point on.
     while core.shape[0] > 0:
         candidate = core.iloc[0]
-        core = core.drop(candidate.name)
-        rest = rest.drop(candidate.name)
+        if candidate.name in core.index.values:
+            core = core.drop(candidate.name)
+        if candidate.name in core.index.values:
+            rest = rest.drop(candidate.name)
         neighborhood: pd.DataFrame = rest[dists[candidate.name].le(epsilon)]
         rest = drop_df(rest, neighborhood)
         core = drop_df(core, neighborhood)
@@ -48,7 +49,7 @@ def dbscan(df: pd.DataFrame, epsilon: float, min_points: int):
 
 def test():
     fn = c.FOUR_CLUSTERS
-    df = parse_csv(fn)
+    df, class_id = parse_csv(fn)
     min_points = 2
     clusters = dbscan(df, 15, min_points)
     for cluster in clusters:
@@ -64,7 +65,7 @@ def main():
         epsilon = float(sys.argv[2])
         num_points = int(sys.argv[3])
 
-    df = parse_csv(fn)
+    df, class_id = parse_csv(fn)
     clusters = dbscan(df, epsilon, num_points)
     for cluster in clusters:
         print(cluster)
