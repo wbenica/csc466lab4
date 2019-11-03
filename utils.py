@@ -175,3 +175,8 @@ def evaluate_clusters(clusters, centroids, verbose=False):
 def drop_df(df1: pd.DataFrame, df2: pd.DataFrame):
     """removes rows from df1 that are also in df2"""
     return pd.concat([df1, df2, df2]).drop_duplicates(keep=False)
+
+
+def strip_file_path(fn):
+    sfn = fn.split('/')[-1].split('.')[0]
+    return sfn
