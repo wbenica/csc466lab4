@@ -1,3 +1,8 @@
+#CSC466 F19 Lab 4
+#Sarah Bae, shbae@calpoly.edu
+#Wesley Benica, wbenica@calpoly.edu
+#A program read and parse input files of datasets to use hierarchical clustering and output a dendrogram showing the hierarchical cluster tree in an output file "outputDendrogram.json". If a threshold for maximum circumference is given as a parameter, we also output the clusters from cutting the dendrogram at the threshold in "clusters.txt". Clusters are made by single link distance, and distance is computed with the euclidian formula.
+
 import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
@@ -136,6 +141,7 @@ def displayClusters(tree, threshold, clusfile):
 def main():
     fName = sys.argv[1]
     maxCirc = None
+    rowIds = None
     if len(sys.argv) > 2:
         maxCirc = float(sys.argv[2])
     fIn = open(fName, "r")
@@ -151,7 +157,12 @@ def main():
 
     dataset = []
     for index, datapt in df.iterrows():
-        newDataPt = Datapoint(rowIds[index], datapt)
+        if rowIds is not None:
+            id = rowIds[index]
+        else:
+            datapt.index += 1
+            id = index + 1
+        newDataPt = Datapoint(id, datapt)
         dataset.append(newDataPt)
     tree = agglomerative(dataset)
     dict = display(tree)
@@ -159,7 +170,7 @@ def main():
         with open('clusters.txt', 'w') as clus:
             numClust = displayClusters(tree, maxCirc, clus)
             print("%d clusters made" % numClust, file = clus)
-    with open('dendrograph.json', 'w') as outfile:
+    with open('outputDendrogram.json', 'w') as outfile:
         json.dump(dict, outfile, indent =4, cls=NpEncoder)
 
 if __name__ == '__main__':
