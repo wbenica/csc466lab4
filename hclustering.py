@@ -1,7 +1,7 @@
 #CSC466 F19 Lab 4
 #Sarah Bae, shbae@calpoly.edu
 #Wesley Benica, wbenica@calpoly.edu
-#A program read and parse input files of datasets to use hierarchical clustering and output a dendrogram showing the hierarchical cluster tree in an output file "outputDendrogram.json". If a threshold for maximum circumference is given as a parameter, we also output the clusters from cutting the dendrogram at the threshold in "clusters.txt". Clusters are made by single link distance, and distance is computed with the euclidian formula.
+#A program read and parse input files of datasets to use hierarchical clustering and output a dendrogram showing the hierarchical cluster tree in an output file "outputDendrogram.json". If a threshold for maximum circumference is given as a parameter, we also output the clusters from cutting the dendrogram at the threshold in "clusters.txt". Clusters are made by single link distance unless an optional parameter is given as "c", and distance is computed with the euclidian formula.
 
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -9,13 +9,15 @@ import numpy as np
 import json
 import math
 import sys
+from utils import get_euclidean_distances, plot_clusters, parse_csv, get_max_dist, \
+    get_min_dist, get_avg_dist, get_sse, evaluate_clusters
 
 class Datapoint:
     def __init__(self, id, data):
         self.id = id
         self.data = data        #series
     def __str__(self):
-        return self.id
+        return str(self.id)
     def __repr__(self):
         return self.id
 
@@ -32,6 +34,8 @@ class Cluster:
             r = self.kids[1].__repr__()
         return ', '.join(["%s" % x.id for x in self.datapts])
         return l + " " + r + " " + ', '.join(["%s" % x.id for x in self.datapts])
+    def __lt__(self, other):
+        return (len(self.datapts) < len(other.datapts))
 
 #numpy wrapper class to let JSON dumps read as primitives. accounts for certain csvs
 #https://stackoverflow.com/a/57915246     
@@ -46,8 +50,7 @@ class NpEncoder(json.JSONEncoder):
         else:
             return super(NpEncoder, self).default(obj)
 
-
-def agglomerative(dataset):
+def agglomerative(dataset, linkage):
     #initialise 2d array of distances and initial rows/columns of single point clusters
     clusters = [Cluster([dataset[i]], 0) for i in range(len(dataset))]
     for i in range(len(clusters)):
@@ -57,7 +60,10 @@ def agglomerative(dataset):
         distances[i][i] = 0
     
     while len(clusters)>1:
-        savedDist, cl1, cl2 = singleLinkDist(clusters)
+        if linkage == "c":
+            savedDist, cl1, cl2 = completeLinkDist(clusters)
+        else:
+            savedDist, cl1, cl2 = singleLinkDist(clusters)
         newClust = Cluster([],savedDist)
         for dp in cl1.datapts:
             newClust.datapts.append(dp)
@@ -98,7 +104,7 @@ def completeLinkDist(clusters):
                     dist = euclidianDist(pt1, pt2)
                     if dist > maxDist:
                         maxDist = dist
-            distances.append(maxDist, clusters[row], clusters[col])
+            distances.append((maxDist, clusters[row], clusters[col]))
     distances.sort()
     return distances[0]
 
@@ -143,8 +149,11 @@ def main():
     fName = sys.argv[1]
     maxCirc = None
     rowIds = None
+    linkage = "s"
     if len(sys.argv) > 2:
         maxCirc = float(sys.argv[2])
+    if len(sys.argv) > 3:
+        linkage = sys.argv[3]
     fIn = open(fName, "r")
     df = pd.read_csv(fName, header=None, skiprows=1)
     colsToUse = fIn.readline().strip("\n").split(",")
@@ -165,7 +174,7 @@ def main():
             id = index
         newDataPt = Datapoint(id, datapt)
         dataset.append(newDataPt)
-    tree = agglomerative(dataset)
+    tree = agglomerative(dataset, linkage)
     dict = display(tree)
     if (maxCirc):
         with open('clusters.txt', 'w') as clus:
