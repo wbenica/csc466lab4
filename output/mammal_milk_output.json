@@ -1,0 +1,269 @@
+{
+    "type": "root",
+    "height": 24.177311678513803,
+    "nodes": [
+        {
+            "type": "node",
+            "height": 7.374442351798543,
+            "nodes": [
+                {
+                    "type": "leaf",
+                    "height": 0,
+                    "data": "Seal"
+                },
+                {
+                    "type": "leaf",
+                    "height": 0,
+                    "data": "Dolphin"
+                }
+            ]
+        },
+        {
+            "type": "node",
+            "height": 8.81078884096083,
+            "nodes": [
+                {
+                    "type": "node",
+                    "height": 1.4430869689661803,
+                    "nodes": [
+                        {
+                            "type": "leaf",
+                            "height": 0,
+                            "data": "Whale"
+                        },
+                        {
+                            "type": "node",
+                            "height": 1.2922847983320163,
+                            "nodes": [
+                                {
+                                    "type": "leaf",
+                                    "height": 0,
+                                    "data": "Deer"
+                                },
+                                {
+                                    "type": "leaf",
+                                    "height": 0,
+                                    "data": "Reindeer"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "node",
+                    "height": 8.09215051763127,
+                    "nodes": [
+                        {
+                            "type": "leaf",
+                            "height": 0,
+                            "data": "Elephant"
+                        },
+                        {
+                            "type": "node",
+                            "height": 6.3618000597315305,
+                            "nodes": [
+                                {
+                                    "type": "node",
+                                    "height": 4.918333050943172,
+                                    "nodes": [
+                                        {
+                                            "type": "leaf",
+                                            "height": 0,
+                                            "data": "Dog"
+                                        },
+                                        {
+                                            "type": "node",
+                                            "height": 3.7509998667022124,
+                                            "nodes": [
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "Rabbit"
+                                                },
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "Rat"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "node",
+                                    "height": 5.231070636112652,
+                                    "nodes": [
+                                        {
+                                            "type": "node",
+                                            "height": 2.7981422408448107,
+                                            "nodes": [
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "Hippo"
+                                                },
+                                                {
+                                                    "type": "node",
+                                                    "height": 2.3475306174787165,
+                                                    "nodes": [
+                                                        {
+                                                            "type": "node",
+                                                            "height": 1.88679622641132,
+                                                            "nodes": [
+                                                                {
+                                                                    "type": "leaf",
+                                                                    "height": 0,
+                                                                    "data": "Zebra"
+                                                                },
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 1.8000000000000014,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "Bison"
+                                                                        },
+                                                                        {
+                                                                            "type": "node",
+                                                                            "height": 1.5126466871017854,
+                                                                            "nodes": [
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Camel"
+                                                                                },
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Llama"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "node",
+                                                            "height": 2.074632497576374,
+                                                            "nodes": [
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 1.2056533498481226,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "Orangutan"
+                                                                        },
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "Monkey"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 1.2257650672131268,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "Horse"
+                                                                        },
+                                                                        {
+                                                                            "type": "node",
+                                                                            "height": 0.9137286249209875,
+                                                                            "nodes": [
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Donkey"
+                                                                                },
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Mule"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "node",
+                                            "height": 3.3301651610693432,
+                                            "nodes": [
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "Cat"
+                                                },
+                                                {
+                                                    "type": "node",
+                                                    "height": 2.524381112272865,
+                                                    "nodes": [
+                                                        {
+                                                            "type": "leaf",
+                                                            "height": 0,
+                                                            "data": "Guinea Pig"
+                                                        },
+                                                        {
+                                                            "type": "node",
+                                                            "height": 1.9490767044936965,
+                                                            "nodes": [
+                                                                {
+                                                                    "type": "leaf",
+                                                                    "height": 0,
+                                                                    "data": "Pig"
+                                                                },
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 1.5384732691860459,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "Buffalo"
+                                                                        },
+                                                                        {
+                                                                            "type": "node",
+                                                                            "height": 1.2043255373859696,
+                                                                            "nodes": [
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Fox"
+                                                                                },
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Sheep"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,203 @@
+{
+    "type": "root",
+    "height": 144.51104047874685,
+    "nodes": [
+        {
+            "type": "node",
+            "height": 1.4723685000705258,
+            "nodes": [
+                {
+                    "type": "leaf",
+                    "height": 0,
+                    "data": "1940YL"
+                },
+                {
+                    "type": "leaf",
+                    "height": 0,
+                    "data": "1953NH"
+                }
+            ]
+        },
+        {
+            "type": "node",
+            "height": 31.601868615637272,
+            "nodes": [
+                {
+                    "type": "leaf",
+                    "height": 0,
+                    "data": "1948RB"
+                },
+                {
+                    "type": "node",
+                    "height": 25.17902320901269,
+                    "nodes": [
+                        {
+                            "type": "node",
+                            "height": 18.344549599267896,
+                            "nodes": [
+                                {
+                                    "type": "node",
+                                    "height": 11.555102768906904,
+                                    "nodes": [
+                                        {
+                                            "type": "leaf",
+                                            "height": 0,
+                                            "data": "1951AX"
+                                        },
+                                        {
+                                            "type": "leaf",
+                                            "height": 0,
+                                            "data": "1948RH"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "node",
+                                    "height": 15.179211141887437,
+                                    "nodes": [
+                                        {
+                                            "type": "node",
+                                            "height": 0.0,
+                                            "nodes": [
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "1929EC"
+                                                },
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "1951AM"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "node",
+                                            "height": 5.0468703173352925,
+                                            "nodes": [
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "1938DL"
+                                                },
+                                                {
+                                                    "type": "node",
+                                                    "height": 1.2908382702724532,
+                                                    "nodes": [
+                                                        {
+                                                            "type": "leaf",
+                                                            "height": 0,
+                                                            "data": "1941FD"
+                                                        },
+                                                        {
+                                                            "type": "node",
+                                                            "height": 0.8586923838022591,
+                                                            "nodes": [
+                                                                {
+                                                                    "type": "leaf",
+                                                                    "height": 0,
+                                                                    "data": "1935RF"
+                                                                },
+                                                                {
+                                                                    "type": "leaf",
+                                                                    "height": 0,
+                                                                    "data": "1955QT"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "node",
+                            "height": 22.405955112201752,
+                            "nodes": [
+                                {
+                                    "type": "leaf",
+                                    "height": 0,
+                                    "data": "1948TG"
+                                },
+                                {
+                                    "type": "node",
+                                    "height": 9.75143066426665,
+                                    "nodes": [
+                                        {
+                                            "type": "node",
+                                            "height": 4.901038919453711,
+                                            "nodes": [
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "1924TZ"
+                                                },
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "1952DA"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "node",
+                                            "height": 9.510095076286044,
+                                            "nodes": [
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "1948RO"
+                                                },
+                                                {
+                                                    "type": "node",
+                                                    "height": 8.71022961809848,
+                                                    "nodes": [
+                                                        {
+                                                            "type": "leaf",
+                                                            "height": 0,
+                                                            "data": "1931DQ"
+                                                        },
+                                                        {
+                                                            "type": "node",
+                                                            "height": 3.42452162498648,
+                                                            "nodes": [
+                                                                {
+                                                                    "type": "leaf",
+                                                                    "height": 0,
+                                                                    "data": "1936AB"
+                                                                },
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 0.0015999999999998238,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "1930SY"
+                                                                        },
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "1949HM"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

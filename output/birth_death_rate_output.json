@@ -1,0 +1,764 @@
+{
+    "type": "root",
+    "height": 11.5974135047432,
+    "nodes": [
+        {
+            "type": "node",
+            "height": 6.100819617067859,
+            "nodes": [
+                {
+                    "type": "leaf",
+                    "height": 0,
+                    "data": "Denmark"
+                },
+                {
+                    "type": "node",
+                    "height": 4.661544808322668,
+                    "nodes": [
+                        {
+                            "type": "node",
+                            "height": 2.12602916254693,
+                            "nodes": [
+                                {
+                                    "type": "leaf",
+                                    "height": 0,
+                                    "data": "Morocco"
+                                },
+                                {
+                                    "type": "leaf",
+                                    "height": 0,
+                                    "data": "Guatemala"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "node",
+                            "height": 4.031128874149277,
+                            "nodes": [
+                                {
+                                    "type": "node",
+                                    "height": 3.1384709652950415,
+                                    "nodes": [
+                                        {
+                                            "type": "leaf",
+                                            "height": 0,
+                                            "data": "Iraq"
+                                        },
+                                        {
+                                            "type": "node",
+                                            "height": 2.6019223662515354,
+                                            "nodes": [
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "Korea"
+                                                },
+                                                {
+                                                    "type": "node",
+                                                    "height": 2.3000000000000007,
+                                                    "nodes": [
+                                                        {
+                                                            "type": "node",
+                                                            "height": 2.1633307652783946,
+                                                            "nodes": [
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 1.62788205960997,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "Ireland"
+                                                                        },
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "Portugal"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 2.0124611797498093,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "node",
+                                                                            "height": 1.71172427686237,
+                                                                            "nodes": [
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Hungary"
+                                                                                },
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Sweden"
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "type": "node",
+                                                                            "height": 1.9646882704388486,
+                                                                            "nodes": [
+                                                                                {
+                                                                                    "type": "node",
+                                                                                    "height": 0.8544003745317532,
+                                                                                    "nodes": [
+                                                                                        {
+                                                                                            "type": "leaf",
+                                                                                            "height": 0,
+                                                                                            "data": "USSR"
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "node",
+                                                                                            "height": 0.8000000000000007,
+                                                                                            "nodes": [
+                                                                                                {
+                                                                                                    "type": "leaf",
+                                                                                                    "height": 0,
+                                                                                                    "data": "Netherlands"
+                                                                                                },
+                                                                                                {
+                                                                                                    "type": "node",
+                                                                                                    "height": 0.7615773105863901,
+                                                                                                    "nodes": [
+                                                                                                        {
+                                                                                                            "type": "leaf",
+                                                                                                            "height": 0,
+                                                                                                            "data": "Uruguay"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "node",
+                                                                                                            "height": 0.6324555320336753,
+                                                                                                            "nodes": [
+                                                                                                                {
+                                                                                                                    "type": "leaf",
+                                                                                                                    "height": 0,
+                                                                                                                    "data": "Argentina"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type": "node",
+                                                                                                                    "height": 0.5385164807134502,
+                                                                                                                    "nodes": [
+                                                                                                                        {
+                                                                                                                            "type": "leaf",
+                                                                                                                            "height": 0,
+                                                                                                                            "data": "United States"
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "node",
+                                                                                                                            "height": 0.5099019513592784,
+                                                                                                                            "nodes": [
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "India"
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                    "type": "node",
+                                                                                                                                    "height": 0.2828427124746218,
+                                                                                                                                    "nodes": [
+                                                                                                                                        {
+                                                                                                                                            "type": "leaf",
+                                                                                                                                            "height": 0,
+                                                                                                                                            "data": "Australia"
+                                                                                                                                        },
+                                                                                                                                        {
+                                                                                                                                            "type": "node",
+                                                                                                                                            "height": 0.22360679774997896,
+                                                                                                                                            "nodes": [
+                                                                                                                                                {
+                                                                                                                                                    "type": "leaf",
+                                                                                                                                                    "height": 0,
+                                                                                                                                                    "data": "Spain"
+                                                                                                                                                },
+                                                                                                                                                {
+                                                                                                                                                    "type": "leaf",
+                                                                                                                                                    "height": 0,
+                                                                                                                                                    "data": "Yugoslavia"
+                                                                                                                                                }
+                                                                                                                                            ]
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                }
+                                                                                                                            ]
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                {
+                                                                                    "type": "node",
+                                                                                    "height": 1.627882059609972,
+                                                                                    "nodes": [
+                                                                                        {
+                                                                                            "type": "leaf",
+                                                                                            "height": 0,
+                                                                                            "data": "Poland"
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "node",
+                                                                                            "height": 1.300000000000001,
+                                                                                            "nodes": [
+                                                                                                {
+                                                                                                    "type": "node",
+                                                                                                    "height": 1.2083045973594553,
+                                                                                                    "nodes": [
+                                                                                                        {
+                                                                                                            "type": "node",
+                                                                                                            "height": 0.848528137423859,
+                                                                                                            "nodes": [
+                                                                                                                {
+                                                                                                                    "type": "leaf",
+                                                                                                                    "height": 0,
+                                                                                                                    "data": "Austria"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type": "node",
+                                                                                                                    "height": 0.5,
+                                                                                                                    "nodes": [
+                                                                                                                        {
+                                                                                                                            "type": "leaf",
+                                                                                                                            "height": 0,
+                                                                                                                            "data": "Britain"
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "node",
+                                                                                                                            "height": 0.42426406871192823,
+                                                                                                                            "nodes": [
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "France"
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "West Germany"
+                                                                                                                                }
+                                                                                                                            ]
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "node",
+                                                                                                            "height": 1.0770329614269003,
+                                                                                                            "nodes": [
+                                                                                                                {
+                                                                                                                    "type": "leaf",
+                                                                                                                    "height": 0,
+                                                                                                                    "data": "Belgium"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type": "leaf",
+                                                                                                                    "height": 0,
+                                                                                                                    "data": "East Germany"
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                {
+                                                                                                    "type": "node",
+                                                                                                    "height": 1.2083045973594584,
+                                                                                                    "nodes": [
+                                                                                                        {
+                                                                                                            "type": "node",
+                                                                                                            "height": 1.0000000000000013,
+                                                                                                            "nodes": [
+                                                                                                                {
+                                                                                                                    "type": "node",
+                                                                                                                    "height": 0.8944271909999135,
+                                                                                                                    "nodes": [
+                                                                                                                        {
+                                                                                                                            "type": "leaf",
+                                                                                                                            "height": 0,
+                                                                                                                            "data": "Finland"
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "node",
+                                                                                                                            "height": 0.6082762530298219,
+                                                                                                                            "nodes": [
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "Italy"
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "Switzerland"
+                                                                                                                                }
+                                                                                                                            ]
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type": "node",
+                                                                                                                    "height": 0.9219544457292892,
+                                                                                                                    "nodes": [
+                                                                                                                        {
+                                                                                                                            "type": "leaf",
+                                                                                                                            "height": 0,
+                                                                                                                            "data": "Czechoslovakia"
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "leaf",
+                                                                                                                            "height": 0,
+                                                                                                                            "data": "Norway"
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "node",
+                                                                                                            "height": 1.2041594578792296,
+                                                                                                            "nodes": [
+                                                                                                                {
+                                                                                                                    "type": "leaf",
+                                                                                                                    "height": 0,
+                                                                                                                    "data": "Bolivia"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type": "node",
+                                                                                                                    "height": 1.0770329614269007,
+                                                                                                                    "nodes": [
+                                                                                                                        {
+                                                                                                                            "type": "node",
+                                                                                                                            "height": 0.707106781186547,
+                                                                                                                            "nodes": [
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "Bulgaria"
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "Romania"
+                                                                                                                                }
+                                                                                                                            ]
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "node",
+                                                                                                                            "height": 0.8062257748298545,
+                                                                                                                            "nodes": [
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "Japan"
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "Greece"
+                                                                                                                                }
+                                                                                                                            ]
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "node",
+                                                            "height": 2.2803508501982757,
+                                                            "nodes": [
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 2.0,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "Indonesia"
+                                                                        },
+                                                                        {
+                                                                            "type": "node",
+                                                                            "height": 1.303840481040529,
+                                                                            "nodes": [
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Philippines"
+                                                                                },
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Peru"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 2.247220505424423,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "leaf",
+                                                                            "height": 0,
+                                                                            "data": "Syria"
+                                                                        },
+                                                                        {
+                                                                            "type": "node",
+                                                                            "height": 1.9416487838947614,
+                                                                            "nodes": [
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Vietnam"
+                                                                                },
+                                                                                {
+                                                                                    "type": "node",
+                                                                                    "height": 1.6124515496597094,
+                                                                                    "nodes": [
+                                                                                        {
+                                                                                            "type": "leaf",
+                                                                                            "height": 0,
+                                                                                            "data": "Israel"
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "node",
+                                                                                            "height": 1.2206555615733705,
+                                                                                            "nodes": [
+                                                                                                {
+                                                                                                    "type": "leaf",
+                                                                                                    "height": 0,
+                                                                                                    "data": "Canada"
+                                                                                                },
+                                                                                                {
+                                                                                                    "type": "leaf",
+                                                                                                    "height": 0,
+                                                                                                    "data": "New Zealand"
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "node",
+                                    "height": 3.959797974644663,
+                                    "nodes": [
+                                        {
+                                            "type": "leaf",
+                                            "height": 0,
+                                            "data": "Algeria"
+                                        },
+                                        {
+                                            "type": "node",
+                                            "height": 3.92045915678253,
+                                            "nodes": [
+                                                {
+                                                    "type": "leaf",
+                                                    "height": 0,
+                                                    "data": "Cambodia"
+                                                },
+                                                {
+                                                    "type": "node",
+                                                    "height": 3.5114099732158843,
+                                                    "nodes": [
+                                                        {
+                                                            "type": "leaf",
+                                                            "height": 0,
+                                                            "data": "Costa Rica"
+                                                        },
+                                                        {
+                                                            "type": "node",
+                                                            "height": 3.3136083051561775,
+                                                            "nodes": [
+                                                                {
+                                                                    "type": "leaf",
+                                                                    "height": 0,
+                                                                    "data": "Jordan"
+                                                                },
+                                                                {
+                                                                    "type": "node",
+                                                                    "height": 2.9410882339705458,
+                                                                    "nodes": [
+                                                                        {
+                                                                            "type": "node",
+                                                                            "height": 0.4123105625617659,
+                                                                            "nodes": [
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Nicaragua"
+                                                                                },
+                                                                                {
+                                                                                    "type": "leaf",
+                                                                                    "height": 0,
+                                                                                    "data": "Venezuela"
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "type": "node",
+                                                                            "height": 2.801785145224377,
+                                                                            "nodes": [
+                                                                                {
+                                                                                    "type": "node",
+                                                                                    "height": 2.765863337187868,
+                                                                                    "nodes": [
+                                                                                        {
+                                                                                            "type": "node",
+                                                                                            "height": 0.5830951894845322,
+                                                                                            "nodes": [
+                                                                                                {
+                                                                                                    "type": "leaf",
+                                                                                                    "height": 0,
+                                                                                                    "data": "Egypt"
+                                                                                                },
+                                                                                                {
+                                                                                                    "type": "leaf",
+                                                                                                    "height": 0,
+                                                                                                    "data": "Malagasy"
+                                                                                                }
+                                                                                            ]
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "node",
+                                                                                            "height": 1.8110770276274843,
+                                                                                            "nodes": [
+                                                                                                {
+                                                                                                    "type": "node",
+                                                                                                    "height": 0.7999999999999972,
+                                                                                                    "nodes": [
+                                                                                                        {
+                                                                                                            "type": "leaf",
+                                                                                                            "height": 0,
+                                                                                                            "data": "Brazil"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "leaf",
+                                                                                                            "height": 0,
+                                                                                                            "data": "Ecuador"
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                {
+                                                                                                    "type": "node",
+                                                                                                    "height": 1.7000000000000004,
+                                                                                                    "nodes": [
+                                                                                                        {
+                                                                                                            "type": "leaf",
+                                                                                                            "height": 0,
+                                                                                                            "data": "Honduras"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "node",
+                                                                                                            "height": 1.627882059609971,
+                                                                                                            "nodes": [
+                                                                                                                {
+                                                                                                                    "type": "leaf",
+                                                                                                                    "height": 0,
+                                                                                                                    "data": "Mexico"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type": "leaf",
+                                                                                                                    "height": 0,
+                                                                                                                    "data": "Colombia"
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                {
+                                                                                    "type": "node",
+                                                                                    "height": 2.8000000000000043,
+                                                                                    "nodes": [
+                                                                                        {
+                                                                                            "type": "node",
+                                                                                            "height": 2.7313000567495322,
+                                                                                            "nodes": [
+                                                                                                {
+                                                                                                    "type": "leaf",
+                                                                                                    "height": 0,
+                                                                                                    "data": "Mongolia"
+                                                                                                },
+                                                                                                {
+                                                                                                    "type": "node",
+                                                                                                    "height": 2.6400757564888178,
+                                                                                                    "nodes": [
+                                                                                                        {
+                                                                                                            "type": "leaf",
+                                                                                                            "height": 0,
+                                                                                                            "data": "Tunisia"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "leaf",
+                                                                                                            "height": 0,
+                                                                                                            "data": "Panama"
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            ]
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "node",
+                                                                                            "height": 2.7856776554368237,
+                                                                                            "nodes": [
+                                                                                                {
+                                                                                                    "type": "node",
+                                                                                                    "height": 0.8944271909999159,
+                                                                                                    "nodes": [
+                                                                                                        {
+                                                                                                            "type": "leaf",
+                                                                                                            "height": 0,
+                                                                                                            "data": "China"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "leaf",
+                                                                                                            "height": 0,
+                                                                                                            "data": "Chile"
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                {
+                                                                                                    "type": "node",
+                                                                                                    "height": 2.147091055358389,
+                                                                                                    "nodes": [
+                                                                                                        {
+                                                                                                            "type": "leaf",
+                                                                                                            "height": 0,
+                                                                                                            "data": "Taiwan"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "node",
+                                                                                                            "height": 1.9849433241279189,
+                                                                                                            "nodes": [
+                                                                                                                {
+                                                                                                                    "type": "node",
+                                                                                                                    "height": 1.6643316977093228,
+                                                                                                                    "nodes": [
+                                                                                                                        {
+                                                                                                                            "type": "leaf",
+                                                                                                                            "height": 0,
+                                                                                                                            "data": "Hong Kong"
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "leaf",
+                                                                                                                            "height": 0,
+                                                                                                                            "data": "Malaysia"
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type": "node",
+                                                                                                                    "height": 1.8681541692269377,
+                                                                                                                    "nodes": [
+                                                                                                                        {
+                                                                                                                            "type": "leaf",
+                                                                                                                            "height": 0,
+                                                                                                                            "data": "Dominican Republic"
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "node",
+                                                                                                                            "height": 1.5811388300841898,
+                                                                                                                            "nodes": [
+                                                                                                                                {
+                                                                                                                                    "type": "leaf",
+                                                                                                                                    "height": 0,
+                                                                                                                                    "data": "Congo"
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                    "type": "node",
+                                                                                                                                    "height": 1.16619037896906,
+                                                                                                                                    "nodes": [
+                                                                                                                                        {
+                                                                                                                                            "type": "leaf",
+                                                                                                                                            "height": 0,
+                                                                                                                                            "data": "Ceylon"
+                                                                                                                                        },
+                                                                                                                                        {
+                                                                                                                                            "type": "leaf",
+                                                                                                                                            "height": 0,
+                                                                                                                                            "data": "Thailand"
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                }
+                                                                                                                            ]
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "node",
+            "height": 7.505997601918082,
+            "nodes": [
+                {
+                    "type": "leaf",
+                    "height": 0,
+                    "data": "Ghana"
+                },
+                {
+                    "type": "leaf",
+                    "height": 0,
+                    "data": "Ivory Coast"
+                }
+            ]
+        }
+    ]
+}
