@@ -10,9 +10,7 @@ import constants as c
 from constants import KMEANS_CENTROID_THRESHOLD
 from utils import drop_df, strip_file_path
 
-
-from utils import get_euclidean_distances, plot_clusters, parse_csv, get_max_dist, \
-    get_min_dist, get_avg_dist, get_sse, evaluate_clusters
+from utils import *
 
 
 def shuffle(df: pd.DataFrame) -> np.ndarray:
@@ -77,12 +75,6 @@ def is_stopping_condition(old_clusters, new_clusters, old_centroids, new_centroi
     num_reassigns = check_num_reassignments(new_clusters, old_clusters)
     change_centroids = check_centroid_change(old_centroids, new_centroids)
     sse_chng = check_sse_change(old_clusters, new_clusters, old_centroids, new_centroids, threshold)
-    if num_reassigns:
-        print('reassign\n')
-    elif change_centroids:
-        print('centroids\n')
-    elif sse_chng:
-        print('sse change\n')
     return change_centroids or num_reassigns or sse_chng
 
 
@@ -149,6 +141,8 @@ def main():
     df, class_id = parse_csv(fn)
     clusters, centroids = kmeans(df, k, threshold)
     results = evaluate_clusters(clusters, centroids, verbose=False)
+    if class_id is not None:
+        accuracy = evaluate_classes(clusters, class_id)
     totals = results.sum()
     totals.name = 'totals'
     results = results.append(totals)
@@ -161,4 +155,4 @@ def main():
 
 
 if __name__ == "__main__":
-    test()
+    main()

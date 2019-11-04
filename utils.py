@@ -4,12 +4,15 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from functools import reduce
 
 SSE = 'SSE'
 PTS = 'Num Points'
 AVG = 'Avg Dist'
 MIN = 'Min Dist'
 MAX = 'Max Dist'
+NUM_DROPPED = 'Num Dropped'
+PCT_DROPPED = 'Pct Dropped'
 
 
 def get_euclidean_distances(mx_one: Union[pd.DataFrame, np.ndarray],
@@ -74,7 +77,7 @@ def plot_clusters(clusters: List[pd.DataFrame], centroids: np.ndarray, title: st
             for cluster, centroid in zip(clusters, centroids):
                 ax.scatter(cluster[0], cluster[1], cluster[2])
                 if centroids is not None:
-                    ax.scatter(centroid[0], centroid[1], centroid[2])
+                    ax.scatter(centroid[0], centroid[1], centroid[2], c='black')
         ax.set_title(title)
         plt.tight_layout()
         plt.savefig(f'./graphs/clusters/{title}')
@@ -148,29 +151,43 @@ def get_sse(cluster: pd.DataFrame, centroid: np.ndarray) -> float:
     return var_sq.sum()
 
 
-def evaluate_clusters(clusters, centroids, verbose=False):
-    results = pd.DataFrame(columns=[MAX, MIN, AVG, SSE, PTS])
+# TODO: Calculate pct dropped
+def evaluate_clusters(clusters, centroids, verbose=False, outliers=None):
+    results = pd.DataFrame(columns=[MAX, MIN, AVG, PTS, SSE])
+    if outliers is not None:
+        results = pd.DataFrame(columns=[MAX, MIN, AVG, PTS, SSE, NUM_DROPPED, PCT_DROPPED])
     if centroids is None:
         centroids = [cluster.mean() for cluster in clusters]
-    for i, clusters in enumerate(clusters):
-        if not clusters.empty:
-            clust_vals = clusters.values if isinstance(clusters, pd.DataFrame) else clusters
+    for i, cluster in enumerate(clusters):
+        if not cluster.empty:
+            clust_vals = cluster.values if isinstance(cluster, pd.DataFrame) else cluster
             centroids = [centroid.value if isinstance(centroid, pd.DataFrame) else centroid for centroid in centroids]
             max = get_max_dist(clust_vals, centroids[i])
             min = get_min_dist(clust_vals, centroids[i])
             avg = get_avg_dist(clust_vals, centroids[i])
             num_points = len(clust_vals)
             sse = get_sse(clust_vals, centroids[i])
-            data = pd.Series([max, min, avg, num_points, sse], name=str(i + 1), index=[MAX, MIN, AVG, PTS, SSE])
+            if outliers is None:
+                data = pd.Series([max, min, avg, num_points, sse], name=str(i + 1), index=[MAX, MIN, AVG, PTS, SSE])
+            else:
+                num_dropped = outliers.shape[0]
+                pct_dropped = num_dropped / reduce(lambda x, y: x + y, map(lambda x: x.shape[0], clusters))
+                data = pd.Series([max, min, avg, int(num_points), sse, int(num_dropped), pct_dropped], name=str(i + 1),
+                                 index=[MAX, MIN, AVG, PTS, SSE, NUM_DROPPED, PCT_DROPPED])
             results = results.append(data)
             if verbose:
                 print()
                 print(f'Cluster {i + 1}')
                 print(f'Centroid: {centroids[i]}')
                 print()
-                print(clusters)
+                print(cluster)
+    if verbose:
+        print(results)
     return results
 
+
+def evaluate_classes(clusters, class_ids):
+    pass
 
 def drop_df(df1: pd.DataFrame, df2: pd.DataFrame):
     """removes rows from df1 that are also in df2"""
