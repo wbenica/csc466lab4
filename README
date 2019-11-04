@@ -6,3 +6,27 @@ Programming language: Python with libraries pandas, numpy, itertools, math, copy
 Instructions to run: python3 hclustering.py <filepath to input csv> <optional: threshold number (max circumference of clusters)>
 
 hclustering.py: A program read and parse input files of datasets to use hierarchical clustering and output a dendrogram showing the hierarchical cluster tree in an output file "outputDendrogram.json". If a threshold for maximum circumference is given as a parameter, we also output the clusters from cutting the dendrogram at the threshold in "clusters.txt". Clusters are made by single link distance, and distance is computed with the euclidian formula. An optional last parameter after the threshold is a "c" for complete linkage instead of single link distance.
+
+kmeans.py:  A program to read csv file dataset and output clusters and analysis based on kmeans clustering. Will plot 2-
+    and 3-D datasets.
+    usage: python3 kmeans.py <filepath to input csv> <k> [SSE stopping threshold]
+
+dbscan.py:  A program to read csv file dataset and output clusters and analysis based on density-based scan clustering.
+    Will plot 2- and 3-D datasets.
+    usage: python3 dbscan.py <filepath to input csv> <epsilon> <min points>
+
+Additional files and programs:
+kmeans_tuning.py:   contains functions to optimize k-values for a dataset and a function for comparing initial centroid
+    selection methods and normalized vs. raw data. If run as a a program, it will output optimal k values for this
+    assignment's datasets
+
+dbscan_tuning.py:   contains functions to optimize epsilon and min_points for a dataset. If run as a program, it will
+    output epsilon and min_points values for this assignment's datasets, though they will require hand-tuning.
+
+kmeans_results.py, dbscan_results.py: When run as programs, will perform the respective clustering algorithm on the
+    assignment's datasets and analysis
+
+utils.py:   Functions for euclidean distance (raw and normalized), plotting clusters/centroids, and evaluating clusters
+    by distances from centroids and sum-squared-error.
+
+constants.py:   constants relating to this assignment, including file paths, optimal k-values, epsilons, and min_points.
